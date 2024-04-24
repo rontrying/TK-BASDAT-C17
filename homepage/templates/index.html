@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accounts Overview</title>
+</head>
+<body>
+    <h1>Accounts Data</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <!-- Add more <th> tags here for other columns -->
+        </tr>
+        {% for row in data %}
+        <tr>
+            <td>{{ row.0 }}</td>
+            <td>{{ row.1 }}</td>
+            <td>{{ row.2 }}</td>
+            <!-- Add more <td> tags here corresponding to additional data -->
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
