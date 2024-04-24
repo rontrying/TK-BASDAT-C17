@@ -36,6 +36,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "base",
     "homepage",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -60,7 +61,7 @@ ROOT_URLCONF = "marmut.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        'DIRS': [BASE_DIR / 'base/templates'], # Tambahkan kode ini
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

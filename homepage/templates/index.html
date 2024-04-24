@@ -1,26 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Accounts Overview</title>
-</head>
-<body>
-    <h1>Accounts Data</h1>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <!-- Add more <th> tags here for other columns -->
-        </tr>
-        {% for row in data %}
-        <tr>
-            <td>{{ row.0 }}</td>
-            <td>{{ row.1 }}</td>
-            <td>{{ row.2 }}</td>
-            <!-- Add more <td> tags here corresponding to additional data -->
-        </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+    
+    <div class="overflow-x-auto relative shadow-md sm:rounded-lg mx-40 my-10">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="py-3 px-6">ID</th>
+                    <th scope="col" class="py-3 px-6">Name</th>
+                    <th scope="col" class="py-3 px-6">Email</th>
+                    <!-- Add more <th> tags here for other columns -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td class="py-4 px-6">{{ row.0 }}</td>
+                    <td class="py-4 px-6">{{ row.1 }}</td>
+                    <td class="py-4 px-6">{{ row.2 }}</td>
+                    <!-- Add more <td> tags here corresponding to additional data -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
