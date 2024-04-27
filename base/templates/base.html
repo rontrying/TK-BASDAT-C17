@@ -45,11 +45,11 @@
                     <div class="flex items-center space-x-4">
                         {% if user.is_authenticated %}
                         <!-- Jika pengguna sudah login, tampilkan link logout -->
-                        <a href="/logout" class="text-gray-800 hover:text-gray-600 transition-colors duration-300">Log Out</a>
+                        <a href="{% url 'authentication:logout_user' %}" class="text-gray-800 hover:text-gray-600 transition-colors duration-300">Log Out</a>
                         {% else %}
                         <!-- Jika pengguna belum login, tampilkan link login dan sign up -->
-                        <a href="/login" class="text-gray-800 hover:text-gray-600 transition-colors duration-300">Log In</a>
-                        <a href="/register" class="text-blue-600 hover:text-blue-400 transition-colors duration-300">Sign Up</a>
+                        <a href="{% url 'authentication:login_user' %}" class="text-gray-800 hover:text-gray-600 transition-colors duration-300">Log In</a>
+                        <a href="{% url 'authentication:register' %}" class="text-blue-600 hover:text-blue-400 transition-colors duration-300">Sign Up</a>
                         {% endif %}
                     </div>
                 </div>
