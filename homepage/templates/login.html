@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="login flex justify-center items-center h-screen bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-lg">
+        <h1 class="text-3xl mb-6">Login</h1>
+
+        <form method="POST" action="">
+            {% csrf_token %}
+            <table class="mb-6">
+                <tr>
+                    <td>username: </td>
+                    <td><input type="text" name="username" placeholder="username" class="form-control border-black"></td>
+                </tr>
+                        
+                <tr>
+                    <td>Password: </td>
+                    <td><input type="password" name="password" placeholder="Password" class="form-control border-black"></td>
+                </tr>
+        
+                <tr>
+                    <td ></td>
+                    <td><input class="btn login_btn bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" value="Login"></td>
+                </tr>
+            </table>
+        </form>
+        
+
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}     
+        
+        <p class="text-center">Don't have an account yet? <a href="{% url 'register' %}">Register Now</a></p>
+    </div>
+</div>
+
+
+{% endblock content %}
