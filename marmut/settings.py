@@ -37,8 +37,11 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "base",
+    "chart",
+    "podcast",
     "homepage",
     "album_and_song",
+    "dashboard",
     "authentication",
     "royalti",
     "django.contrib.admin",

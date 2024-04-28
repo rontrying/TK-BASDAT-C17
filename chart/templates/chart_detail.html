@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mx-auto mt-10">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-center mb-4">Chart Detail</h1>
+        <p class="text-lg text-center mb-4">{{ chart_type }}</p>
+        <div class="text-center mb-6">
+            <a href="{% url 'chart_list' %}" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800">Back</a>
+        </div>
+        <div class="overflow-x-auto relative shadow-md sm:rounded-lg mx-20 my-10">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th class="py-4 px-6">Judul Lagu</th>
+                        <th class="py-4 px-6">Oleh</th>
+                        <th class="py-4 px-6">Tanggal Rilis</th>
+                        <th class="py-4 px-6">Total Plays</th>
+                        <th class="py-4 px-6">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for song in chart_details %}
+                    <tr >
+                        <td class="border py-4 px-6">{{ song.title }}</td>
+                        <td class="border py-4 px-6">{{ song.artist }}</td>
+                        <td class="border py-4 px-6">{{ song.release_date }}</td>
+                        <td class="border py-4 px-6">{{ song.total_plays }}</td>
+                        <td class="border py-4 px-6 text-center"><a href="{% url 'podcast' %}" class="text-blue-500">[Lihat]</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
