@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4">DAFTAR LAGU PADA ALBUM1</h1>
+        <table class="min-w-full bg-white shadow-md rounded overflow-hidden">
+            <thead class="bg-gray-800 text-white">
+                <tr>
+                    <th class="py-3 px-4 uppercase font-semibold text-sm">Judul</th>
+                    <th class="py-3 px-4 uppercase font-semibold text-sm">Durasi</th>
+                    <th class="py-3 px-4 uppercase font-semibold text-sm">Total Play</th>
+                    <th class="py-3 px-4 uppercase font-semibold text-sm">Total Download</th>
+                    <th class="py-3 px-4 uppercase font-semibold text-sm">Action</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700">
+                <tr>
+                    <td class="py-3 px-4">Lagu1</td>
+                    <td class="py-3 px-4">2 menit</td>
+                    <td class="py-3 px-4">3</td>
+                    <td class="py-3 px-4">0</td>
+                    <td class="py-3 px-4">
+                        <a href="#" class="text-blue-500 hover:text-blue-700 mr-2">[Lihat Detail]</a>
+                        <a href="#" class="text-red-500 hover:text-red-700">[Hapus]</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="py-3 px-4">Lagu2</td>
+                    <td class="py-3 px-4">3 menit</td>
+                    <td class="py-3 px-4">2</td>
+                    <td class="py-3 px-4">2</td>
+                    <td class="py-3 px-4">
+                        <a href="#" class="text-blue-500 hover:text-blue-700 mr-2">[Lihat Detail]</a>
+                        <a href="#" class="text-red-500 hover:text-red-700">[Hapus]</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+{% endblock content %}
