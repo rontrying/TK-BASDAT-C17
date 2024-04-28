@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-4">LIST ROYALTI</h1>
+    <table class="min-w-full">
+        <thead>
+            <tr class="bg-gray-900 text-white uppercase text-sm leading-normal">
+                <th class="py-3 px-6 text-left">Judul Lagu</th>
+                <th class="py-3 px-6 text-left">Judul Album</th>
+                <th class="py-3 px-6 text-left">Total Play</th>
+                <th class="py-3 px-6 text-left">Total Download</th>
+                <th class="py-3 px-6 text-left">Total Royalti Didapat</th>
+            </tr>
+        </thead>
+        <tbody class="text-gray-600 text-sm font-light">
+            <!-- Data goes here -->
+            <tr>
+                <td class="py-3 px-6 text-left">Lagu1</td>
+                <td class="py-3 px-6 text-left">Album1</td>
+                <td class="py-3 px-6 text-left">3</td>
+                <td class="py-3 px-6 text-left">0</td>
+                <td class="py-3 px-6 text-left">Rp 450,000</td>
+            </tr>
+            <tr>
+                <td class="py-3 px-6 text-left">Lagu2</td>
+                <td class="py-3 px-6 text-left">Album2</td>
+                <td class="py-3 px-6 text-left">2</td>
+                <td class="py-3 px-6 text-left">2</td>
+                <td class="py-3 px-6 text-left">Rp 520,000</td>
+            </tr>
+            <!-- Repeat rows for additional data -->
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "homepage",
     "album_and_song",
     "authentication",
+    "royalti",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
