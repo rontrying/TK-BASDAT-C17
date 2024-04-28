@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mx-auto mt-10">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-center mb-4">Chart List</h1>
+            <div class="overflow-x-auto relative shadow-md sm:rounded-lg mx-40 my-10">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th class="py-4 px-6">Tipe</th>
+                        <th class="py-4 px-6">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chart in chart_types %}
+                    <tr>
+                        <td class="border py-4 px-6">{{ chart.tipe }}</td>
+                        <td class="border py-4 px-6 text-center"><a href="{% url 'chart_detail' chart_type=chart.chart_type %}" class="text-blue-700">[Lihat Daftar Lagu]</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="text-center">
+        <a href="{% url 'podcast' %}" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded ">Back</a>
+    </div>
+</div>
+
+{% endblock content %}

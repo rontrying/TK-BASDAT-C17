@@ -1,3 +1,6 @@
+#tailwind
+node_modules/
+
 # Django
 *.log
 *.pot
