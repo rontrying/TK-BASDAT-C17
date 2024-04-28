@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     "base",
     "homepage",
+    "album_and_song",
     "authentication",
     "django.contrib.admin",
     "django.contrib.auth",
