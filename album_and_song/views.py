@@ -17,7 +17,10 @@ def show_main(request):
     return render(request, 'create_album.html', {'data': result})
 
 def list_album(request):
-    return render(request, 'list_album.html')
+    context = {
+        'user_role': "Label"
+    }
+    return render(request, 'list_album.html',context=context)
 
 def create_lagu(request):
     return render(request, 'create_lagu.html')

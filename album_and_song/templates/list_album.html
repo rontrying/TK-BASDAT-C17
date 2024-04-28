@@ -22,7 +22,9 @@
                     <td class="py-2 px-4">test</td>
                     <td class="py-2 px-4">
                         <a href="{% url 'album_and_song:daftar_lagu' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Lihat Daftar Lagu</a>
-                        <a href="{% url 'album_and_song:create_lagu' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Tambah Lagu</a>
+                        {% if user_role == 'Artist/Songwriter' %}
+                            <a href="{% url 'album_and_song:create_lagu' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Tambah Lagu</a>
+                        {% endif %}
                         <a href="#" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Hapus</a>
                     </td>                    
                 </tr>
