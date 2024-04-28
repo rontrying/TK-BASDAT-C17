@@ -24,4 +24,6 @@ urlpatterns = [
     path('podcast/', include('podcast.urls')),
     path('auth/', include('authentication.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('albumSong/', include('album_and_song.urls')),
+    path('royalti/', include('royalti.urls')),
 ]

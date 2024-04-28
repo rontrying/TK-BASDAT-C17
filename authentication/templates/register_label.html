@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="login mx-40 my-10">
+    <h1 class="text-3xl mb-6 text-center font-bold">Register</h1>
+    
+    <div class="login mx-40 my-10 bg-gray-100 p-6 rounded-lg text-center">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-6 mx-auto">
+                <label for="email" class="block mb-2 font-bold">Email</label>
+                <input type="email" name="email" id="email" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
+
+                <label for="password" class="block mt-4 mb-2 font-bold">Password</label>
+                <input type="password" name="password" id="password" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
+
+                <label for="name" class="block mt-4 mb-2 font-bold">Name</label>
+                <input type="text" name="name" id="name" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
+
+                <label class="block mt-4 mb-2 font-bold">Contact</label>
+                <input type="text" name="city" id="city" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
+            </div>
+
+            <input type="submit" name="submit" value="Daftar" class="bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6">
+        </form>
+    </div>
+    
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li class="text-red-500">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+
+{% endblock content %}
