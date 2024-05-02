@@ -9,20 +9,20 @@
         <form method="POST">
             {% csrf_token %}
             <div class="mb-6 mx-auto">
-                <label for="email" class="block mb-2 font-bold">Email</label>
+                <label for="email" class="block mb-2 font-bold text-left">Email</label>
                 <input type="email" name="email" id="email" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
 
-                <label for="password" class="block mt-4 mb-2 font-bold">Password</label>
+                <label for="password" class="block mt-4 mb-2 font-bold text-left">Password</label>
                 <input type="password" name="password" id="password" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
 
-                <label for="name" class="block mt-4 mb-2 font-bold">Name</label>
+                <label for="name" class="block mt-4 mb-2 font-bold text-left">Name</label>
                 <input type="text" name="name" id="name" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
 
-                <label class="block mt-4 mb-2 font-bold">Contact</label>
-                <input type="text" name="city" id="city" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
+                <label class="block mt-4 mb-2 font-bold text-left">Contact</label>
+                <input type="text" name="contact" id="contact" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
             </div>
 
-            <input type="submit" name="submit" value="Daftar" class="bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6">
+            <input type="submit" name="submit" value="Register" class="bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6 w-full">
         </form>
     </div>
     

@@ -7,43 +7,50 @@
         <form method="POST">
             {% csrf_token %}
             <div class="mb-6 mx-auto">
-                <label for="email" class="block mb-2 font-bold">Email</label>
+                <label for="email" class="block mb-2 font-bold text-left">Email</label>
                 <input type="email" name="email" id="email" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
 
-                <label for="password" class="block mt-4 mb-2 font-bold">Password</label>
+                <label for="password" class="block mt-4 mb-2 font-bold text-left">Password</label>
                 <input type="password" name="password" id="password" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
 
-                <label for="name" class="block mt-4 mb-2 font-bold">Name</label>
+                <label for="name" class="block mt-4 mb-2 font-bold text-left">Name</label>
                 <input type="text" name="name" id="name" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
 
-                <label for="gender" class="block mt-4 mb-2 font-bold">Gender</label>
+                <label for="gender" class="block mt-4 mb-2 font-bold text-left">Gender</label>
                 <select name="gender" id="gender" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
                     <option value="" disabled selected hidden></option>
                     <option value="1">Man</option>
                     <option value="0">Woman</option>
                 </select>
 
-                <label for="birthplace" class="block mt-4 mb-2 font-bold">Birth Place</label>
+                <label for="birthplace" class="block mt-4 mb-2 font-bold text-left">Birth Place</label>
                 <input type="text" name="birthplace" id="birthplace" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
 
-                <label for="birthdate" class="block mt-4 mb-2 font-bold">Birth Date</label>
+                <label for="birthdate" class="block mt-4 mb-2 font-bold text-left">Birth Date</label>
                 <input type="date" name="birthdate" id="birthdate" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
 
-                <label class="block mt-4 mb-2 font-bold">City</label>
+                <label class="block mt-4 mb-2 font-bold text-left">City</label>
                 <input type="text" name="city" id="city" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500" required>
             </div>
 
-            <div>
-                <label class="block mt-4 mb-2 font-bold">Role</label>
-                <input type="checkbox" name="role_podcaster" id="role_podcaster" value="True">
-                <label for="role_podcaster">Podcaster</label><br>
-                <input type="checkbox" name="role_artist" id="role_artist" value="True">
-                <label for="role_artist">Artist</label><br>
-                <input type="checkbox" name="role_songwriter" id="role_songwriter" value="True">
-                <label for="role_songwriter">Songwriter</label>
+            <div class="flex flex-wrap items-center">
+                <label class="block mb-2 mr-4 font-bold text-left">Role</label>
+                <div class="flex ml-4">
+                    <input type="checkbox" name="role_podcaster" id="role_podcaster" value="True">
+                    <label for="role_podcaster" class="text-left ml-1">Podcaster</label>
+                </div>
+                <div class="flex ml-4">
+                    <input type="checkbox" name="role_artist" id="role_artist" value="True">
+                    <label for="role_artist" class="text-left ml-1">Artist</label>
+                </div>
+                <div class="flex ml-4">
+                    <input type="checkbox" name="role_songwriter" id="role_songwriter" value="True">
+                    <label for="role_songwriter" class="text-left ml-1">Songwriter</label>
+                </div>
             </div>
+            
 
-            <input type="submit" name="submit" value="Daftar" class="bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6">
+            <input type="submit" name="submit" value="Register" class="bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6 w-full">
         </form>
     </div>
     
