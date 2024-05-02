@@ -65,7 +65,6 @@ def login_user(request):
                                                 and role != "is_authenticated"]
                     request.session["is_authenticated"] = True
                     request.session["email"] = email
-                    print(dict(request.session))
                     return redirect('dashboard')
                 else:
                     messages.info(request, 'Incorrect username or password. Please try again')
