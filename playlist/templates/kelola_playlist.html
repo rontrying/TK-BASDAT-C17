@@ -1,35 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container mx-auto p-4">
-    <h1 class="text-3xl mb-6 text-center font-bold">USER PLAYLIST</h1>
+    <h1 class="text-3xl mb-6 text-center font-bold">User Playlist</h1>
 
     {% if playlists %}
-    <table class="min-w-full">
-        <thead>
-            <tr class="bg-gray-900 text-white uppercase text-sm leading-normal">
-                <th class="py-3 px-6 text-left">Judul</th>
-                <th class="py-3 px-6 text-left">Jumlah Lagu</th>
-                <th class="py-3 px-6 text-left">Total Durasi</th>
-                <th class="py-3 px-6 text-left">Action</th>
-            </tr>
-        </thead>
-        <tbody class="text-gray-600 text-sm font-light">
-            {% for playlist in playlists %}
-            <tr>
-                <td class="py-3 px-6 text-left">{{ playlist.title }}</td>
-                <td class="py-3 px-6 text-left">{{ playlist.num_songs }}</td>
-                <td class="py-3 px-6 text-left">{{ playlist.total_duration }}</td>
-                <!-- Additional actions can be added here -->
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="min-w-full">
+            <thead>
+                <tr class="bg-gray-800 text-white uppercase text-xs leading-normal">
+                    <th class="py-3 px-6 text-left">Judul</th>
+                    <th class="py-3 px-6 text-left">Jumlah Lagu</th>
+                    <th class="py-3 px-6 text-left">Total Durasi</th>
+                    <th class="py-3 px-6 text-left">Action</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700 text-sm font-light">
+                {% for playlist in playlists %}
+                <tr>
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ playlist.title }}</td>
+                    <td class="py-3 px-6 text-left">{{ playlist.num_songs }}</td>
+                    <td class="py-3 px-6 text-left">{{ playlist.total_duration }}</td>
+                    <td class="py-3 px-6 text-left">
+                        <button onclick="window.location.href='/playlist/playlist-details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Detail</button>
+                        <button class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</button>
+                        <button class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-1 px-3 rounded focus:outline-none focus:shadow-outline">Hapus</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% else %}
     <p class="text-center">Anda belum memiliki playlist.</p>
     {% endif %}
     
     <div class="text-center mt-6">
-        <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        <button onclick="window.location.href='/playlist/tambah-playlist/'" class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             <span class="inline-block mr-2">+</span> Tambah Playlist
         </button>
     </div>
