@@ -8,9 +8,9 @@ def user_playlist(request):
 
     playlists_data = [
         {"title": "Amazing Grace", "num_songs": 0, "total_duration": "0 menit"},
-        {"title": "Yellow Mellow", "num_songs": 15, "total_duration": "75 menit"},
+        {"title": "Yellow Mellow", "num_songs": 15, "total_duration": "1 jam 15 menit"},
         {"title": "Chill Vibes", "num_songs": 3, "total_duration": "12 menit"},
-        {"title": "Galau Parah", "num_songs": 18, "total_duration": "90 menit"},
+        {"title": "Galau Parah", "num_songs": 18, "total_duration": "1 jam 30 menit"},
         {"title": "Rock Abiezzz", "num_songs": 9, "total_duration": "30 menit"}
     ]
 
