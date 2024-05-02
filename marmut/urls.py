@@ -26,4 +26,5 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls')),
     path('albumSong/', include('album_and_song.urls')),
     path('royalti/', include('royalti.urls')),
+    path('playlist/', include('playlist.urls')),
 ]

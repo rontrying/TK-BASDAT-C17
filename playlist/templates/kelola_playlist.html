@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-4">USER PLAYLIST</h1>
+
+    {% if playlists %}
+    <table class="min-w-full">
+        <thead>
+            <tr class="bg-gray-900 text-white uppercase text-sm leading-normal">
+                <th class="py-3 px-6 text-left">Judul</th>
+                <th class="py-3 px-6 text-left">Jumlah Lagu</th>
+                <th class="py-3 px-6 text-left">Total Durasi</th>
+                <th class="py-3 px-6 text-left">Action</th>
+            </tr>
+        </thead>
+        <tbody class="text-gray-600 text-sm font-light">
+            {% for playlist in playlists %}
+            <tr>
+                <td class="py-3 px-6 text-left">{{ playlist.title }}</td>
+                <td class="py-3 px-6 text-left">{{ playlist.num_songs }}</td>
+                <td class="py-3 px-6 text-left">{{ playlist.total_duration }}</td>
+                <td class="py-3 px-6 text-left">
+                    <a href="{% url 'playlist_detail' playlist.id %}" class="text-blue-600 hover:text-blue-400 transition-colors duration-300">Detail</a>
+                    <a href="{% url 'edit_playlist' playlist.id %}" class="text-green-600 hover:text-green-400 transition-colors duration-300">Ubah</a>
+                    <a href="{% url 'delete_playlist' playlist.id %}" class="text-red-600 hover:text-red-400 transition-colors duration-300">Hapus</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Anda belum memiliki playlist.</p>
+    {% endif %}
+
+    <div class="mt-6">
+        <a href="{% url 'create_playlist' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Tambah Playlist</a>
+    </div>
+</div>
+{% endblock content %}
