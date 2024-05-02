@@ -8,7 +8,7 @@ def user_dashboard(request):
     user_email = request.session.get('email')
 
     with connection.cursor() as cursor:
-        if request.session.get('role') == 'Label':
+        if request.session.get('is_label'):
             query = get_label_profile(user_email)
         else:
             query = get_user_profile(user_email)
@@ -19,11 +19,8 @@ def user_dashboard(request):
     context = result[0]
     context["user"] = dict(request.session)
     context["role"] = parse_role(context["user"]["roles"])
-
-
-    # user_profile["role"] = ", ".join(user_profile["role"])
-    # user_profile["gender"] = "Male" if user_profile["gender"] == 1 else "Female"
-    # user_profile["content"] = content
-    # user_profile["user"] = dict(request.session)
+    if context["user"]["is_user"]:
+        context["gender"] = "Male" if context["gender"] == 1 else "Female"
+    print(context["user"])
 
     return render(request, 'dashboard.html', context)
