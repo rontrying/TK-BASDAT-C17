@@ -5,20 +5,20 @@
     <h1 class="text-3xl font-bold mb-4">CREATE ALBUM</h1>
     <form action="#" method="POST" class="max-w-md mx-auto bg-white shadow-md rounded px-8 py-6">
         <div class="mb-4">
-            <label for="title" class="block text-gray-700 font-bold mb-2">Judul:</label>
-            <input type="text" id="title" name="title" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500" placeholder="Masukkan judul album">
+            <label for="title" class="block text-gray-700 font-bold mb-2">Title:</label>
+            <input type="text" id="title" name="title" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500" placeholder="Masukkan Title album">
         </div>
         <div class="mb-4">
             <label for="label" class="block text-gray-700 font-bold mb-2">Label:</label>
             <select id="label" name="label" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500">
-                <option value="" disabled selected>Pilih label album</option>
+                <option value="" disabled selected>Select an album label</option>
                 {% for row in data %}
                 <option>{{ row.0 }}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="text-center">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">SUBMIT</button>
+            <button type="submit" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">SUBMIT</button>
         </div>
     </form>
 </div>

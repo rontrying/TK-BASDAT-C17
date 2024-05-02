@@ -68,9 +68,9 @@ def login_user(request):
                     print(dict(request.session))
                     return redirect('dashboard')
                 else:
-                    messages.info(request, 'Username atau password salah. Silahkan coba lagi')
+                    messages.info(request, 'Incorrect username or password. Please try again')
             else:
-                messages.info(request, 'Username atau password salah. Silahkan coba lagi')
+                messages.info(request, 'Incorrect username or password. Please try again')
 
     context = {}
     return render(request, 'login.html', context)
