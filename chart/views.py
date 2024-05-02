@@ -26,4 +26,5 @@ def chart_detail(request, chart_type):
     ]
     context = {'chart_details': chart_details, 'chart_type': chart_type}
     context["user"] = dict(request.session)
+
     return render(request, 'chart_detail.html', context)

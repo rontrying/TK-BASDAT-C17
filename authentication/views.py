@@ -61,9 +61,11 @@ def login_user(request):
                     request.session[roles[row['role']]] = True
 
                 if request.session["is_user"] or request.session["is_label"]:
-                    request.session["roles"] = [role for role, value in request.session.items() if value == True]
+                    request.session["roles"] = [role for role, value in request.session.items() if value == True
+                                                and role != "is_authenticated"]
                     request.session["is_authenticated"] = True
                     request.session["email"] = email
+                    print(dict(request.session))
                     return redirect('dashboard')
                 else:
                     messages.info(request, 'Username atau password salah. Silahkan coba lagi')

@@ -19,13 +19,13 @@ def play_podcast(request):
             {
                 'title': "Episode 1: The Beginning",
                 'description': "In this episode, we explore the beginnings of something great.",
-                'duration': "45 menit",
+                'duration': "45 minutes",
                 'date': "18/03/2024",
             },
             {
                 'title': "Episode 2: The Continuation",
                 'description': "Diving deeper into the subject, we uncover new insights.",
-                'duration': "1 jam 30 menit",
+                'duration': "1 hour 30 minutes",
                 'date': "25/03/2024",
             },
         ],
