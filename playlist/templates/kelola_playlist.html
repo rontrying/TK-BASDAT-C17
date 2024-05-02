@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container mx-auto p-4">
-    <h1 class="text-3xl mb-6 text-center font-bold">User Playlist Detail</h1>
+    <h1 class="text-3xl mb-6 text-center font-bold">User Playlists</h1>
 
     {% if playlists %}
     <div class="overflow-x-auto">
         <table class="min-w-full">
             <thead>
                 <tr class="bg-gray-800 text-white uppercase text-xs leading-normal">
-                    <th class="py-3 px-6 text-left">Judul</th>
-                    <th class="py-3 px-6 text-left">Jumlah Lagu</th>
-                    <th class="py-3 px-6 text-left">Total Durasi</th>
+                    <th class="py-3 px-6 text-left">Title</th>
+                    <th class="py-3 px-6 text-left">Number of Songs</th>
+                    <th class="py-3 px-6 text-left">Total Duration</th>
                     <th class="py-3 px-6 text-left">Action</th>
                 </tr>
             </thead>
@@ -21,9 +21,9 @@
                     <td class="py-3 px-6 text-left">{{ playlist.num_songs }}</td>
                     <td class="py-3 px-6 text-left">{{ playlist.total_duration }}</td>
                     <td class="py-3 px-6 text-left">
-                        <button onclick="window.location.href='/playlist/playlist-details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Detail</button>
-                        <button class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</button>
-                        <button class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-1 px-3 rounded focus:outline-none focus:shadow-outline">Hapus</button>
+                        <button onclick="window.location.href='/playlist/playlist-details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Details</button>
+                        <button onclick="window.location.href='/playlist/update-playlist/'" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</button>
+                        <button class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-1 px-3 rounded focus:outline-none focus:shadow-outline">Delete</button>
                     </td>
                 </tr>
                 {% endfor %}
@@ -31,12 +31,12 @@
         </table>
     </div>
     {% else %}
-    <p class="text-center">Anda belum memiliki playlist.</p>
+    <p class="text-center">You haven't make a playlist</p>
     {% endif %}
     
     <div class="text-center mt-6">
         <button onclick="window.location.href='/playlist/tambah-playlist/'" class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            <span class="inline-block mr-2">+</span> Tambah Playlist
+            <span class="inline-block mr-2">+</span> Add Playlist
         </button>
     </div>
 </div>
