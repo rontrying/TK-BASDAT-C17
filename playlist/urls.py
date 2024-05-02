@@ -5,4 +5,5 @@ urlpatterns = [
     path('', user_playlist, name='user_playlist'),
     path('tambah-playlist/', tambah_playlist, name='tambah_playlist'),
     path('playlist-details/', playlist_details, name='playlist_details'),
+    path('playlist-details/tambah-lagu/', tambah_lagu, name='tambah_lagu'),
 ]

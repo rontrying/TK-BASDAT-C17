@@ -41,3 +41,23 @@ def playlist_details(request):
     }
 
     return render(request, 'playlist_details.html', context)
+
+def tambah_lagu(request):
+
+    all_songs = [
+        {"id": 1, "title": "As It Was", "artist": "Harry Styles"},
+        {"id": 2, "title": "About Damn Time", "artist": "Lizzo"},
+        {"id": 3, "title": "First Class", "artist": "Jack Harlow"},
+        {"id": 4, "title": "Wait For U", "artist": "Future featuring Drake & Tems"},
+        {"id": 5, "title": "Me Porto Bonito", "artist": "Bad Bunny & Chencho Corleone"},
+        {"id": 6, "title": "Moscow Mule", "artist": "Bad Bunny"},
+        {"id": 7, "title": "Tití Me Preguntó", "artist": "Bad Bunny"},
+        {"id": 8, "title": "Running Up That Hill", "artist": "Kate Bush"},
+        {"id": 9, "title": "The Kind Of Love We Make", "artist": "Luke Combs"},
+        {"id": 10, "title": "I Ain't Worried", "artist": "OneRepublic"}
+    ]
+
+    context = {
+        "all_songs": all_songs
+    }
+    return render(request, 'tambah_lagu.html', context)
