@@ -16,7 +16,8 @@ def create_album(request):
         label = request.POST.get('label')
         return redirect("album_and_song:list_album")
     context["user"] = dict(request.session)
-    return render(request, 'create_album.html', {'data': result})
+    context["data"] = result
+    return render(request, 'create_album.html', context=context)
 
 def list_album(request):
     context = {}
