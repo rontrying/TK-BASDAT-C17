@@ -9,9 +9,9 @@
             <a href="{% url 'chart_list' %}" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800">Back</a>
         </div>
         <div class="overflow-x-auto relative shadow-md sm:rounded-lg mx-20 my-10">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
+            <table class="w-full text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr class="text-gray-200">
                         <th class="py-4 px-6">Judul Lagu</th>
                         <th class="py-4 px-6">Oleh</th>
                         <th class="py-4 px-6">Tanggal Rilis</th>
@@ -21,7 +21,7 @@
                 </thead>
                 <tbody>
                     {% for song in chart_details %}
-                    <tr >
+                    <tr class="text-gray-700">
                         <td class="border py-4 px-6">{{ song.title }}</td>
                         <td class="border py-4 px-6">{{ song.artist }}</td>
                         <td class="border py-4 px-6">{{ song.release_date }}</td>
