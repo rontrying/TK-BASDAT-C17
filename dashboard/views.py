@@ -29,11 +29,10 @@ def get_user_profile(user_email):
     return user_profile
 
 def user_dashboard(request):
-    user_email = "donaldgarcia@example.net"
+    user_email = "nancyrhodes@example.org"
     content = {}
 
     user_profile = get_user_profile(user_email)
-    print(user_profile)
     
     if "Pengguna Biasa" in user_profile["role"]:
         content['user_content'] = True
@@ -47,7 +46,7 @@ def user_dashboard(request):
         content['label_content'] = True
 
     user_profile["role"] = ", ".join(user_profile["role"])
+    user_profile["gender"] = "Male" if user_profile["gender"] == 1 else "Female"
     user_profile["content"] = content
-    print(user_profile)
 
     return render(request, 'dashboard.html', user_profile)
