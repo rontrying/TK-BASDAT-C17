@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "dashboard",
     "authentication",
     "royalti",
+    "playlist",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
