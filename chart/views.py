@@ -13,7 +13,10 @@ def chart_list(request):
     for row in result:
         row["chart_type"] = row["tipe"].replace(" ", "-").lower()
     
-    return render(request, 'chart_list.html', {'chart_types': result})
+    context = {"chart_types": result}
+    context["user"] = dict(request.session)
+    
+    return render(request, 'chart_list.html', context)
 
 def chart_detail(request, chart_type):
     chart_type = chart_type.replace("-", " ").title()
@@ -21,4 +24,6 @@ def chart_detail(request, chart_type):
         {'title': 'Song1', 'artist': 'Artist1', 'release_date': '09/03/2024', 'total_plays': 21000},
         {'title': 'Song2', 'artist': 'Artist2', 'release_date': '02/03/2024', 'total_plays': 19000}
     ]
-    return render(request, 'chart_detail.html', {'chart_details': chart_details, 'chart_type': chart_type})
+    context = {'chart_details': chart_details, 'chart_type': chart_type}
+    context["user"] = dict(request.session)
+    return render(request, 'chart_detail.html', context)
