@@ -9,7 +9,7 @@
         <div class="mb-6 mx-auto">
             <div class="mb-4 bg">
                 <p><strong>Judul:</strong> {{ playlist.title }}</p>
-                <p><strong>Pembuat:</strong> {{ playlist.creator }}</p>
+                <p><strong>Pembuat:</strong> {{ nama }}</p>
                 <p><strong>Jumlah Lagu:</strong> {{ playlist.num_songs }}</p>
                 <p><strong>Total Durasi:</strong> {{ playlist.total_duration }}</p>
                 <p><strong>Tanggal Dibuat:</strong> {{ playlist.creation_date }}</p>
@@ -55,7 +55,7 @@
         </div>
     </div>
     {% else %}
-    <p class="text-center">No playlist data available.</p>
+    <p class="text-center">Anda belum memiliki Playlist :(</p>
     {% endif %}
 </div>
 

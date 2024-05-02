@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.db import connection
+from dashboard.query import get_label_profile, get_user_profile
 from playlist.query import *
 from utils import parse
 
@@ -14,10 +15,14 @@ def user_playlist(request):
     ]
 
     playlists_dict = {"playlists": playlists_data}
+    playlists_dict["user"] = dict(request.session)
     return render(request, 'kelola_playlist.html', context = playlists_dict)
 
 def tambah_playlist(request):
-    return render(request, 'tambah_playlist.html', {})
+    context = {
+        "user": dict(request.session)
+    }
+    return render(request, 'tambah_playlist.html', context)
 
 def playlist_details(request):
     songs = [
@@ -28,7 +33,6 @@ def playlist_details(request):
 
     playlist = {
         "title": "Chill Vibes",
-        "creator": "Ricardo",
         "num_songs": 3,
         "total_duration": "12 menit",
         "creation_date": "04/04/2024",
@@ -36,9 +40,22 @@ def playlist_details(request):
         "songs": songs
     }
 
-    context = {
-        "playlist": playlist
-    }
+    user_email = request.session.get('email')
+
+    with connection.cursor() as cursor:
+        if request.session.get('role') == 'Label':
+            query = get_label_profile(user_email)
+        else:
+            query = get_user_profile(user_email)
+
+        cursor.execute(query)
+        result = parse(cursor)
+
+    context = result[0]
+
+    context["playlist"] = playlist
+
+    context["user"] = dict(request.session)
 
     return render(request, 'playlist_details.html', context)
 
@@ -60,4 +77,5 @@ def tambah_lagu(request):
     context = {
         "all_songs": all_songs
     }
+    context["user"] = dict(request.session)
     return render(request, 'tambah_lagu.html', context)

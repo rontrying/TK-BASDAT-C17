@@ -15,7 +15,8 @@ def song_details(request):
     }
 
     context = {
-        "song": song
+        "song": song,
+        "user": dict(request.session),
     }
 
     return render(request, 'song_details.html', context)
