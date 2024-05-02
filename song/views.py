@@ -6,7 +6,7 @@ def song_details(request):
         "genres": ["Pop", "Indie"],
         "artist": "Keshi",
         "songwriters": ["Keshi", "Kenji"], 
-        "duration": "3 menit",
+        "duration": "3 minutes",
         "release_date": "24/09/19",
         "year": 2019,
         "total_plays": 100000,
@@ -27,11 +27,11 @@ def tambah_lagu_ke_playlist(request):
     }
 
     playlists_data = [
-        {"title": "Amazing Grace", "num_songs": 0, "total_duration": "0 menit"},
-        {"title": "Yellow Mellow", "num_songs": 15, "total_duration": "1 jam 15 menit"},
-        {"title": "Chill Vibes", "num_songs": 3, "total_duration": "12 menit"},
-        {"title": "Galau Parah", "num_songs": 18, "total_duration": "1 jam 30 menit"},
-        {"title": "Rock Abiezzz", "num_songs": 9, "total_duration": "30 menit"}
+        {"title": "Amazing Grace", "num_songs": 0, "total_duration": "0 minute"},
+        {"title": "Yellow Mellow", "num_songs": 15, "total_duration": "1 hour 15 minute"},
+        {"title": "Chill Vibes", "num_songs": 3, "total_duration": "12 minutes"},
+        {"title": "Galau Parah", "num_songs": 18, "total_duration": "1 hour 30 minutes"},
+        {"title": "Rock Abiezzz", "num_songs": 9, "total_duration": "30 minutes"}
     ]
 
     context["playlists"] = playlists_data

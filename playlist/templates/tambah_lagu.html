@@ -2,14 +2,14 @@
 {% block content %}
 
 <div class="login mx-40 my-10">
-    <h1 class="text-3xl mb-6 text-center font-bold">Tambah Lagu</h1>
+    <h1 class="text-3xl mb-6 text-center font-bold">Add Song</h1>
     <div class="login mx-40 my-10 bg-gray-100 p-6 rounded-lg text-center">
         <form method="POST" action="/playlist/playlist-details/">
             {% csrf_token %}
             <div class="mb-6 mx-auto relative">
-                <label class="block mb-2 font-bold text-left">Lagu</label>
+                <label class="block mb-2 font-bold text-left">Song</label>
                 <button onclick="toggleDropdown()" type="button" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500 text-left" aria-haspopup="true" aria-expanded="false">
-                    Pilih Lagu
+                    Choose Song
                 </button>
                 <div x-show="open" class="absolute mt-2 w-full rounded-md bg-white shadow-lg" style="display: none;">
                     <div class="py-1" role="none" style="max-height: 200px; overflow-y: auto;">

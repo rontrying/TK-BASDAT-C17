@@ -8,26 +8,26 @@
     <div class="login mx-40 my-10 bg-gray-100 p-6 rounded-lg text-center">
         <div class="mb-6 mx-auto">
             <div class="mb-4 bg">
-                <p><strong>Judul:</strong> {{ playlist.title }}</p>
-                <p><strong>Pembuat:</strong> {{ nama }}</p>
-                <p><strong>Jumlah Lagu:</strong> {{ playlist.num_songs }}</p>
-                <p><strong>Total Durasi:</strong> {{ playlist.total_duration }}</p>
-                <p><strong>Tanggal Dibuat:</strong> {{ playlist.creation_date }}</p>
-                <p><strong>Deskripsi:</strong> {{ playlist.description }}</p>
+                <p><strong>Title:</strong> {{ playlist.title }}</p>
+                <p><strong>Creator:</strong> {{ nama }}</p>
+                <p><strong>Number of Songs:</strong> {{ playlist.num_songs }}</p>
+                <p><strong>Total Duration:</strong> {{ playlist.total_duration }}</p>
+                <p><strong>Creation Date:</strong> {{ playlist.creation_date }}</p>
+                <p><strong>Description:</strong> {{ playlist.description }}</p>
             </div>
             
             <div class="flex justify-between mb-4">
                 <button class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Shuffle Play</button>
                 <button class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                 onclick="window.location.href='/playlist/'">Kembali</button>
+                 onclick="window.location.href='/playlist/'">Back</button>
             </div>
 
             <table class="w-full text-sm text-left">
                 <thead class="text-xs text-gray-700 uppercase bg-black">
                     <tr class="text-white">
-                        <th scope="col" class="py-3 px-6">Judul Lagu</th>
-                        <th scope="col" class="py-3 px-6">Oleh</th>
-                        <th scope="col" class="py-3 px-6">Durasi</th>
+                        <th scope="col" class="py-3 px-6">Title</th>
+                        <th scope="col" class="py-3 px-6">By</th>
+                        <th scope="col" class="py-3 px-6">Duration</th>
                         <th scope="col" class="py-3 px-6">Actions</th>
                     </tr>
                 </thead>
@@ -38,9 +38,9 @@
                         <td class="py-4 px-6">{{ song.artist }}</td>
                         <td class="py-4 px-6">{{ song.duration }}</td>
                         <td class="py-4 px-6">
-                            <button onclick="window.location.href='/song/details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Lihat</button>
+                            <button onclick="window.location.href='/song/details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">See More</button>
                             <button onclick="window.location.href='#'" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Play</button>
-                            <button class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-1 px-3 rounded focus:outline-none focus:shadow-outline">Hapus</button>
+                            <button class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-1 px-3 rounded focus:outline-none focus:shadow-outline">Delete</button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -49,13 +49,13 @@
 
             <div class="text-center mt-6">
                 <button onclick="window.location.href='/playlist/playlist-details/tambah-lagu/'"
-                 class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">+ Tambah Lagu
+                 class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">+ Add Song
                 </button>
             </div>
         </div>
     </div>
     {% else %}
-    <p class="text-center">Anda belum memiliki Playlist :(</p>
+    <p class="text-center">You haven't make a Playlist</p>
     {% endif %}
 </div>
 
