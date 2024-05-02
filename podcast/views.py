@@ -30,6 +30,7 @@ def play_podcast(request):
             },
         ],
     }
+    context["user"] = dict(request.session)
 
     return render(request, 'play_podcast.html', context)
 
@@ -40,7 +41,9 @@ def podcast_list(request):
         {'title': 'COACH JUSTIN, SOK TAHU SEPAK BOLA APA MEMANG BENERAN TAHU? SELESAI TUH BARANG!!', 'episode_count': 3, 'total_duration': '60 menit'},
         {'title': 'COACH JUSTIN BONGKAR DALANG DIBALIK ANJLOKNYA INDUSTRI SEPAK BOLA INDONESIA  ', 'episode_count': 2, 'total_duration': '75 menit'},
     ]
-    return render(request, 'podcast_list.html', {'podcasts': podcasts, 'genres':genres})
+    context ={'podcasts': podcasts, 'genres':genres}
+    context["user"] = dict(request.session)
+    return render(request, 'podcast_list.html', context)
 
 
 def episode_list(request):
@@ -58,7 +61,9 @@ def episode_list(request):
             'release_date': '25/03/2024',
         },
     ]
-    return render(request, 'episode_list.html', {'episodes': episodes})
+    context = {'episodes': episodes}
+    context["user"] = dict(request.session)
+    return render(request, 'episode_list.html', context)
 
 
 @csrf_exempt
