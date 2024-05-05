@@ -15,32 +15,21 @@
             </thead>
             <tbody>
                 <!-- Loop through each album data -->
-                <tr>
-                    <td class="py-2 px-4">Album1</td>
-                    <td class="py-2 px-4">LabelA</td>
-                    <td class="py-2 px-4">0</td>
-                    <td class="py-2 px-4">0 menit</td>
-                    <td class="py-2 px-4">
-                        <a href="{% url 'album_and_song:daftar_lagu' %}" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Lihat Daftar Lagu</a>
-                        {% if user.is_artist or user.is_songwriter %}
-                            <a href="{% url 'album_and_song:create_lagu' %}" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Tambah Lagu</a>
-                        {% endif %}
-                        <a href="#" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Hapus</a>
-                    </td>                    
-                </tr>
-                <tr>
-                    <td class="py-2 px-4">Album2</td>
-                    <td class="py-2 px-4">LabelB</td>
-                    <td class="py-2 px-4">2</td>
-                    <td class="py-2 px-4">4 menit</td>
-                    <td class="py-2 px-4">
-                        <a href="{% url 'album_and_song:daftar_lagu' %}" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Lihat Daftar Lagu</a>
-                        {% if user.is_artist or user.is_songwriter %}
-                            <a href="{% url 'album_and_song:create_lagu' %}" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Tambah Lagu</a>
-                        {% endif %}
-                        <a href="#" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Hapus</a>
-                    </td>                    
-                </tr>
+                {% for row in data %}
+                    <tr>
+                        <td class="py-2 px-4">{{ row.0 }}</td>
+                        <td class="py-2 px-4">{{ row.1 }}</td>
+                        <td class="py-2 px-4">{{ row.2 }}</td>
+                        <td class="py-2 px-4">{{ row.3 }}</td>
+                        <td class="py-2 px-4">
+                            <a href="{% url 'album_and_song:daftar_lagu' nama_album=row.0 %}" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Lihat Daftar Lagu</a>
+                            {% if user.is_artist or user.is_songwriter %}
+                                <a href="{% url 'album_and_song:create_lagu' %}" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Tambah Lagu</a>
+                            {% endif %}
+                            <a href="#" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Hapus</a>
+                        </td>                    
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
