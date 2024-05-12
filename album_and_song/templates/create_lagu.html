@@ -6,7 +6,7 @@
     <form action="#" method="POST" class="max-w-md mx-auto bg-white shadow-md rounded px-8 py-6">
         <div class="mb-4">
             <label for="album" class="block text-gray-700 font-bold mb-2">Album:</label>
-            <input type="text" id="album" name="album" value="Album1" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500" readonly>
+            <input type="text" id="album" name="album" value="{{nama_album}}" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500" readonly>
         </div>
         <div class="mb-4">
             <label for="title" class="block text-gray-700 font-bold mb-2">Title:</label>
@@ -14,17 +14,27 @@
         </div>
         <div class="mb-4">
             <label for="artist" class="block text-gray-700 font-bold mb-2">Artist:</label>
-            <input type="text" id="artist" name="artist" value="Artist Name" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500" readonly>
-        </div>
+            {% if user.is_artist %}
+                <input type="text" id="artist" name="artist" value="{{ nama }}" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500" readonly>
+            {% elif user.is_songwriter %}
+                <select id="artist" name="artist" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500">
+                    {% for row in data_artist %}
+                        <option value="{{ row.0 }}">{{ row.0 }}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+        </div>        
         <div class="mb-4">
             <label for="songwriter" class="block text-gray-700 font-bold mb-2">Songwriter:</label>
-            <select id="songwriter" name="songwriter[]" multiple size="3" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500">
-                <!-- Isi dropdown dengan opsi songwriter -->
-                <option value="1">Songwriter 1</option>
-                <option value="2">Songwriter 2</option>
-                <option value="3">Songwriter 3</option>
-                <!-- Tambahkan opsi lain sesuai kebutuhan -->
-            </select>
+            {% if user.is_songwriter %}
+                <input type="text" value="{{ nama }}" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500" readonly>
+            {% elif user.is_artist %}
+                <select id="songwriter" name="songwriter[]" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500">
+                    {% for row in data_songwriter %}
+                        <option value="{{ row.0 }}">{{ row.0 }}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
         </div>
         <div class="mb-4">
             <label for="genre" class="block text-gray-700 font-bold mb-2">Genre:</label>

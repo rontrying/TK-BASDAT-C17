@@ -12,3 +12,13 @@ def select_lagu(nama_album):
         select k.judul, k.durasi, s.total_play, s.total_download from konten k, song s, album a 
         where k.id = s.id_konten and a.id = s.id_album and a.judul = '{nama_album}';
     """
+
+def select_artist():
+    return f"""
+        select nama from artist a, akun ak where a.email_akun = ak.email ;
+    """
+
+def select_songwriter():
+    return f"""
+        select nama from songwriter a, akun ak where a.email_akun = ak.email ;
+    """
