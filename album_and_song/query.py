@@ -1,10 +1,10 @@
 def select_all():
     return f"""
-        SELECT nama FROM label;
+        SELECT nama,id FROM label;
     """
 def select_album():
     return f"""
-        select judul, l.nama, jumlah_lagu, total_durasi from album a, label l where a.id_label = l.id;
+        select judul, l.nama, jumlah_lagu, total_durasi, a.id from album a, label l where a.id_label = l.id;
     """
 
 def select_lagu(nama_album):
@@ -22,3 +22,22 @@ def select_songwriter():
     return f"""
         select nama from songwriter a, akun ak where a.email_akun = ak.email ;
     """
+
+def select_nama_album(id_album):
+    return f"""
+        select judul from album a where a.id = '{id_album}' ;
+    """
+
+def insert_new_album(id,title,jumlah_lagu,id_label,total_durasi):
+    # album baru 0 saat lagu ditambah akan diupdate dengan trigger
+    jumlah_lagu = 0
+    total_durasi = 0
+    return f"""
+        INSERT INTO ALBUM VALUES (
+        '{id}',
+        '{title}',
+        '{jumlah_lagu}',
+        '{id_label}',
+        '{total_durasi}'
+        );
+        """

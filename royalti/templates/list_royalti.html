@@ -13,22 +13,15 @@
             </tr>
         </thead>
         <tbody class="text-gray-600 text-sm font-light">
-            <!-- Data goes here -->
-            <tr>
-                <td class="py-3 px-6 text-left">Lagu1</td>
-                <td class="py-3 px-6 text-left">Album1</td>
-                <td class="py-3 px-6 text-left">3</td>
-                <td class="py-3 px-6 text-left">0</td>
-                <td class="py-3 px-6 text-left">Rp 450,000</td>
-            </tr>
-            <tr>
-                <td class="py-3 px-6 text-left">Lagu2</td>
-                <td class="py-3 px-6 text-left">Album2</td>
-                <td class="py-3 px-6 text-left">2</td>
-                <td class="py-3 px-6 text-left">2</td>
-                <td class="py-3 px-6 text-left">Rp 520,000</td>
-            </tr>
-            <!-- Repeat rows for additional data -->
+            {% for row in data %}
+                <tr>
+                    <td class="py-3 px-6 text-left">{{ row.0 }}</td>
+                    <td class="py-3 px-6 text-left">{{ row.1 }}</td>
+                    <td class="py-3 px-6 text-left">{{ row.2 }}</td>
+                    <td class="py-3 px-6 text-left">{{ row.3 }}</td>
+                    <td class="py-3 px-6 text-left">Rp {{ row.4 }}</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>

@@ -13,7 +13,7 @@
             <select id="label" name="label" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500">
                 <option value="" disabled selected>Select an album label</option>
                 {% for row in data %}
-                <option>{{ row.0 }}</option>
+                <option value="{{ row.1 }}">{{ row.0 }}</option>
                 {% endfor %}
             </select>
         </div>

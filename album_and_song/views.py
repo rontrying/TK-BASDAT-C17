@@ -7,21 +7,24 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from utils import parse
 from dashboard.query import get_user_profile, get_label_profile
-
+import uuid
 # Create your views here.
 
 @csrf_exempt
 def create_album(request):
     context = {}
-    with connection.cursor() as cursor:
-        cursor.execute(select_all())
-        result = cursor.fetchall()
+    cursor = connection.cursor()
+    cursor.execute(select_all())
+    result = cursor.fetchall()
+    context["data"] = result
     if request.method == "POST":
+        id = uuid.uuid4()
         title = request.POST.get("title")
-        label = request.POST.get("label")
+        id_label = request.POST.get("label")
+        cursor.execute(insert_new_album(id,title,0,id_label,0))
+        cursor.close()
         return redirect("album_and_song:list_album")
     context["user"] = dict(request.session)
-    context["data"] = result
     return render(request, "create_album.html", context=context)
 
 
@@ -36,7 +39,10 @@ def list_album(request):
 
 
 @csrf_exempt
-def create_lagu(request, nama_album=""):
+def create_lagu(request, id_album=""):
+    with connection.cursor() as cursor:
+        cursor.execute(select_nama_album(id_album))
+        nama_album = cursor.fetchall()[0][0]
     context = {"nama_album": nama_album}
     user_email = request.session.get("email")
 
@@ -61,7 +67,7 @@ def create_lagu(request, nama_album=""):
             res = cur.fetchall()
             context["data_songwriter"] = res
         elif context["user"]["is_artist"] and context["user"]["is_songwriter"]:
-            pass  # gaperlu fetch data
+            pass  # gaperlu fetch data karena label nama dan songwriter
         else:
             cur.execute(select_artist())
             res = cur.fetchall()
@@ -76,7 +82,10 @@ def create_lagu(request, nama_album=""):
     return render(request, "create_lagu.html", context=context)
 
 
-def daftar_lagu(request, nama_album=""):
+def daftar_lagu(request, id_album=""):
+    with connection.cursor() as cursor:
+        cursor.execute(select_nama_album(id_album))
+        nama_album = cursor.fetchall()[0][0]
     context = {"nama_album": nama_album}
     with connection.cursor() as cursor:
         cursor.execute(select_lagu(nama_album))
