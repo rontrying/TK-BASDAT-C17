@@ -18,7 +18,7 @@ def insert_podcaster(email):
 # TODO: ID SAMA PEMILIK HAK CIPTA BLM TAU
 def insert_artist(id, email_akun, id_pemilik_hak_cipta):
     return f"""
-        INSERT INTO podcaster (id, email_akun, id_pemilik_hak_cipta)
+        INSERT INTO artist (id, email_akun, id_pemilik_hak_cipta)
         VALUES ('{id}', '{email_akun}', '{id_pemilik_hak_cipta}');
     """
 
@@ -34,6 +34,23 @@ def insert_label(id, nama, email, password, kontak, id_pemilik_hak_cipta):
     return f"""
         INSERT INTO label (id, nama, email, password, kontak, id_pemilik_hak_cipta)
         VALUES ('{id}', '{nama}', '{email}', '{password}', '{kontak}', {id_pemilik_hak_cipta}');
+    """
+
+def insert_pemilik_hak_cipta(id, rate_royalti):
+    return f"""
+        INSERT INTO pemilik_hak_cipta (id, rate_royalti)
+        VALUES ('{id}', {rate_royalti});
+    """
+
+def insert_non_premium(email):
+    return f"""
+        INSERT INTO nonpremium (email)
+        VALUES ('{email}');
+    """
+
+def get_pemilik_hak_cipta(id):
+    return f"""
+        SELECT * from pemilik_hak_cipta WHERE id = '{id}';
     """
 
 def get_user_role(email, password):
@@ -54,4 +71,56 @@ def get_user_role(email, password):
 
         SELECT *
         FROM roles;
+    """
+
+def get_email(email):
+    return f"""
+        SELECT email FROM akun WHERE email = '{email}'
+        UNION ALL
+        SELECT email FROM label WHERE email = '{email}';
+    """
+
+def get_podcaster(email):
+    return f"""
+        SELECT email FROM podcaster WHERE email = '{email}';
+    """
+
+def get_artist(email):
+    return f"""
+        SELECT email_akun FROM artist WHERE email_akun = '{email}';
+    """
+
+def get_artist_by_id(id):
+    return f"""
+        SELECT id FROM artist WHERE id = '{id}';
+    """
+
+def get_songwriter(email):
+    return f"""
+        SELECT email_akun FROM songwriter WHERE email_akun = '{email}';
+    """
+
+def get_songwriter_by_id(id):
+    return f"""
+        SELECT id FROM songwriter WHERE id = '{id}';
+    """
+
+def delete_akun(email):
+    return f"""
+        DELETE FROM akun WHERE email = '{email}';
+    """
+
+def delete_podcaster(email):
+    return f"""
+        DELETE FROM podcaster WHERE email = '{email}';
+    """
+
+def delete_artist(email):
+    return f"""
+        DELETE FROM artist WHERE email_akun = '{email}';
+    """
+
+def delete_songwriter(email):
+    return f"""
+        DELETE FROM songwriter WHERE email_akun = '{email}';
     """
