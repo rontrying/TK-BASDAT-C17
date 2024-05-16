@@ -39,13 +39,15 @@
             {% if user.is_songwriter %}
                 <input type="text" value="{{ nama }}" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500" readonly>
             {% elif user.is_artist %}
-                <select id="songwriter" name="songwriter[]" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500">
+                <select id="songwriter" name="songwriter[]" multiple size="3" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500">
                     {% for row in data_songwriter %}
-                        <option value="{{ row.1 }}" id="songwriter" name="songwriter">{{ row.0 }}</option>
+                        <option value="{{ row.1 }}">{{ row.0 }}</option>
                     {% endfor %}
                 </select>
+                <!-- Input tersembunyi untuk menyimpan nilai songwriter yang dipilih -->
+                <input type="hidden" id="selected-songwriter" name="selected-songwriter">
             {% endif %}
-        </div>
+        </div>        
         <div class="mb-4">
             <label for="genre" class="block text-gray-700 font-bold mb-2">Genre:</label>
             <select id="genre" name="genre[]" multiple size="3" class="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500">
@@ -84,6 +86,15 @@
             // Menetapkan nilai yang dipilih ke input dengan id "selected-genre"
             $('#selected-genre').val(selectedValues);
         });
+
+        $('#songwriter').on('change', function() {
+            // Mendapatkan nilai yang dipilih
+            var selectedValues = $(this).val();
+
+            // Menetapkan nilai yang dipilih ke input dengan id "selected-genre"
+            $('#selected-songwriter').val(selectedValues);
+        });
+
     });
 </script>
 {% endblock content %}
