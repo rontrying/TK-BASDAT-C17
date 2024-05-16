@@ -48,7 +48,11 @@ def create_album(request):
         str_id_album = str(id_album)
         id_konten = uuid.uuid4()
         str_id_konten = str(id_konten)
-        if context["user"]["is_songwriter"] :
+        if context["user"]["is_songwriter"] and context["user"]["is_artist"]:
+            id_artist = request.session["id_album_song"]
+            cursor.execute(get_id_songwriter(user_email))
+            id_songwriter = cursor.fetchall()[0][0]
+        elif context["user"]["is_songwriter"] :
             id_songwriter = request.session["id_album_song"]
             id_artist = request.POST.get("artist")
         else :
@@ -143,7 +147,11 @@ def create_lagu(request, id_album=""):
         str_id_album = str(id_album)
         id_konten = uuid.uuid4()
         str_id_konten = str(id_konten)
-        if context["user"]["is_songwriter"] :
+        if context["user"]["is_songwriter"] and context["user"]["is_artist"]:
+            id_artist = request.session["id_album_song"]
+            cursor.execute(get_id_songwriter(user_email))
+            id_songwriter = cursor.fetchall()[0][0]
+        elif context["user"]["is_songwriter"] :
             id_songwriter = request.session["id_album_song"]
             id_artist = request.POST.get("artist")
         else :
