@@ -1,4 +1,4 @@
-def select_all():
+def select_label():
     return f"""
         SELECT nama,id FROM label;
     """
@@ -13,6 +13,22 @@ def select_album_songwriter(id):
         select distinct a.judul, l.nama, jumlah_lagu, total_durasi, a.id from album a 
         join label l on a.id_label = l.id join song s on a.id = s.id_album join songwriter_write_song sws  
         on sws.id_song = s.id_konten where sws.id_songwriter = '{id}';
+    """
+
+def select_album_artist_songwriter(id):
+    return f"""
+        select distinct a.judul, l.nama, jumlah_lagu, total_durasi, a.id from album a 
+        join label l on a.id_label = l.id join song s on a.id = s.id_album join artist a2 
+        on a2.id = s.id_artist where a2.id = '{id}'
+        UNION
+        select distinct a.judul, l.nama, jumlah_lagu, total_durasi, a.id from album a 
+        join label l on a.id_label = l.id join song s on a.id = s.id_album join songwriter_write_song sws  
+        on sws.id_song = s.id_konten where sws.id_songwriter = '{id}';
+    """
+
+def select_album_label(email):
+    return f"""
+        select a.judul, l.nama, jumlah_lagu, total_durasi, a.id from album a join label l on a.id_label = l.id where l.email = '{email}';
     """
 def select_lagu(id):
     return f"""
@@ -115,5 +131,39 @@ def album_delete(id):
 
 def lagu_delete(id):
     return f"""
+        delete from song where id_konten = '{id}';
         delete from konten where id = '{id}';
+    """
+
+def stored_procedure_for_album_song():
+    return f"""
+        CREATE OR REPLACE FUNCTION update_album_attributes()
+        RETURNS TRIGGER AS $$
+        BEGIN
+            IF TG_OP = 'INSERT' THEN
+                UPDATE album
+                SET jumlah_lagu = jumlah_lagu + 1,
+                    total_durasi = total_durasi +  (
+                SELECT durasi FROM KONTEN WHERE id = NEW.id_konten
+            )
+                WHERE id = NEW.id_album;
+            ELSIF TG_OP = 'DELETE' THEN
+                UPDATE album
+                SET jumlah_lagu = jumlah_lagu - 1,
+                    total_durasi = total_durasi - (
+                SELECT durasi FROM KONTEN WHERE id = OLD.id_konten
+            )
+                WHERE id = OLD.id_album;
+            END IF;
+            RETURN NULL;
+        END;
+        $$ LANGUAGE plpgsql;
+    """
+
+def trigger_for_album_song():
+    return f"""
+        CREATE TRIGGER update_album_attributes_trigger
+        AFTER INSERT OR DELETE ON song
+        FOR EACH ROW
+        EXECUTE FUNCTION update_album_attributes();
     """
