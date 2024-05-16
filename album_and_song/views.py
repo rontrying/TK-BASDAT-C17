@@ -89,7 +89,7 @@ def list_album(request):
     context = {}
     cursor = connection.cursor()
     context["user"] = dict(request.session)
-    if context["user"]["is_artist"] and not context["user"]["is_songwriter"]:
+    if context["user"]["is_artist"] and context["user"]["is_songwriter"]:
         user_id = request.session["id_album_song"]
         query = select_album_artist_songwriter(user_id)
         cursor.execute(query)
