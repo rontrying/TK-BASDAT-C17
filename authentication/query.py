@@ -15,25 +15,22 @@ def insert_podcaster(email):
         VALUES ('{email}');
     """
 
-# TODO: ID SAMA PEMILIK HAK CIPTA BLM TAU
 def insert_artist(id, email_akun, id_pemilik_hak_cipta):
     return f"""
         INSERT INTO artist (id, email_akun, id_pemilik_hak_cipta)
         VALUES ('{id}', '{email_akun}', '{id_pemilik_hak_cipta}');
     """
 
-# TODO: ID SAMA PEMILIK HAK CIPTA BLM TAU
 def insert_songwriter(id, email_akun, id_pemilik_hak_cipta):
     return f"""
         INSERT INTO songwriter (id, email_akun, id_pemilik_hak_cipta)
         VALUES ('{id}', '{email_akun}', '{id_pemilik_hak_cipta}');
     """
 
-# TODO: UUID belom dibikin
 def insert_label(id, nama, email, password, kontak, id_pemilik_hak_cipta):
     return f"""
         INSERT INTO label (id, nama, email, password, kontak, id_pemilik_hak_cipta)
-        VALUES ('{id}', '{nama}', '{email}', '{password}', '{kontak}', {id_pemilik_hak_cipta}');
+        VALUES ('{id}', '{nama}', '{email}', '{password}', '{kontak}', '{id_pemilik_hak_cipta}');
     """
 
 def insert_pemilik_hak_cipta(id, rate_royalti):
@@ -51,6 +48,11 @@ def insert_non_premium(email):
 def get_pemilik_hak_cipta(id):
     return f"""
         SELECT * from pemilik_hak_cipta WHERE id = '{id}';
+    """
+
+def get_label(id):
+    return f"""
+        SELECT id FROM label WHERE id = '{id}';
     """
 
 def get_user_role(email, password):
