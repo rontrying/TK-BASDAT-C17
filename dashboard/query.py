@@ -1,6 +1,10 @@
 def get_user_data(email):
     return  f"""
         SELECT a.email ,
+                a.nama, 
+                a.kota_asal,
+                a.tempat_lahir,
+                a.tanggal_lahir,
                 up.judul AS judul_playlist,
                 k.judul AS judul,
                 'lagu' AS tipe
@@ -13,6 +17,10 @@ def get_user_data(email):
         WHERE a.email = '{email}'
         UNION
         SELECT a.email ,
+                a.nama, 
+                a.kota_asal,
+                a.tempat_lahir,
+                a.tanggal_lahir,
                 up.judul AS judul_playlist,
                 k.judul AS judul,
                 'podcast' AS tipe
