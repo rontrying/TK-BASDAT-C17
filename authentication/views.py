@@ -17,10 +17,36 @@ def registration_type(request):
     return render(request, 'registration_type.html', context={})
 
 def register_label(request):
-    form = {}
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        with connection.cursor() as cursor:
+
+            try:
+                # Retrieve semua data dari request
+                nama = request.POST.get('name')
+                kontak =  request.POST.get('contact')
+
+                # Generate ID (PK)
+                id = uuid.UUID(int=random.getrandbits(128))
+                while (check_label(cursor, id)):
+                    id = uuid.UUID(int=random.getrandbits(128))
+
+                # Generate id pemilik (FK)
+                id_pemilik_hak_cipta = uuid.UUID(int=random.getrandbits(128))
+                rate_royalti = random.choice([i*50 for i in range(1, 50)])
+                while (check_pemilik_hak_cipta(cursor, id_pemilik_hak_cipta)):
+                    id_pemilik_hak_cipta = uuid.UUID(int=random.getrandbits(128))
+                cursor.execute(insert_pemilik_hak_cipta(id_pemilik_hak_cipta, rate_royalti))
+
+                # Insert ke Label
+                cursor.execute(insert_label(id, nama, email, password, kontak, id_pemilik_hak_cipta))
+                return redirect('authentication:login_user')
+            except InternalError:
+                messages.error(request, 'Email has been used. Please try again!')
     
-    context = {'form':form}
-    return render(request, 'register_label.html', context)
+    return render(request, 'register_label.html', {})
 
 def register_pengguna(request):
     if request.method == "POST":
@@ -47,7 +73,6 @@ def register_pengguna(request):
                 # Generate id pemilik hak cipta
                 id_pemilik_hak_cipta = uuid.UUID(int=random.getrandbits(128))
                 if (songwriter or artist):
-                    id_pemilik_hak_cipta = uuid.UUID(int=random.getrandbits(128))
                     rate_royalti = random.choice([i*50 for i in range(1, 50)])
                     while (check_pemilik_hak_cipta(cursor, id_pemilik_hak_cipta)):
                         id_pemilik_hak_cipta = uuid.UUID(int=random.getrandbits(128))
@@ -72,7 +97,7 @@ def register_pengguna(request):
             
             # Kalo udah ada emailnya
             except InternalError:
-                messages.error(request, 'Email has been used. Please try again')
+                messages.error(request, 'Email has been used. Please try again!')
                 # cursor.execute(get_nonpremium(email))
                 # cursor.execute(delete_artist(email))         
                 # cursor.execute(delete_podcaster(email))
@@ -98,6 +123,11 @@ def insert_verified(cursor, email, podcaster, artist, songwriter, id_artist, id_
     
 def check_pemilik_hak_cipta(cursor, id):
     cursor.execute(get_pemilik_hak_cipta(id))
+    result = parse(cursor)
+    return False if len(result) == 0 else True
+
+def check_label(cursor, id):
+    cursor.execute(get_label(id))
     result = parse(cursor)
     return False if len(result) == 0 else True
 
