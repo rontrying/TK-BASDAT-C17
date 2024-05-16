@@ -39,9 +39,11 @@ def user_dashboard(request):
             user_content = parse(cursor)
             context.update(user_content[0] if user_content else {})
 
-            context['playlist_content'] = [item['judul_playlist'] for item in user_content if item['judul_playlist']]
-            context['song_content'] = [item['judul'] for item in user_content if item['tipe'] == 'lagu']
-            context['podcast_content'] = [item['judul'] for item in user_content if item['tipe'] == 'podcast']
+            context['playlist_content'] = [item['judul_playlist'] for item in user_content if item['judul_playlist'] and item["judul_playlist"] is not None]
+            context['song_content'] = [item['judul'] for item in user_content if item['tipe'] == 'lagu'and item["judul"] is not None]
+            context['podcast_content'] = [item['judul'] for item in user_content if item['tipe'] == 'podcast'and item["judul"] is not None]
+
+            print(context)
 
     context = {k: (v if v else False) for k, v in context.items()}
 
@@ -49,6 +51,7 @@ def user_dashboard(request):
     context['user'] = user_info
     context["role"] = parse_role(context["user"]["roles"])
     context['gender'] = "Male" if user_info.get('gender') == 1 else "Female"
+    
 
     return render(request, 'dashboard.html', context)
 

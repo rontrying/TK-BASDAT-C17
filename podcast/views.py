@@ -1,3 +1,4 @@
+import uuid
 from utils import parse
 from podcast.query import *
 from datetime import datetime
@@ -38,77 +39,98 @@ def play_podcast(request, podcast_id):
 
     return render(request, 'play_podcast.html', context)
 
-
 def podcast_list(request):
+    context, podcasts = {}, []
+    email_account = request.session.get('email')
+
+    with connection.cursor() as cursor:
+        query = get_podcast_list(email_account)  
+        cursor.execute(query)
+        result = parse(cursor) 
+        
+        for entry in result:
+            podcasts.append({
+                'title': entry['judul'],  
+                'podcast_id': entry['podcast_id'],
+                'episode_count': entry['total_episode'],
+                'total_duration': convert_minutes_to_hours(entry['total_durasi'])  
+            })
+
     genres = ['Comedy', 'News', 'History', 'Technology', 'Sports', 'Music', 'Education', 'Health', 'Science', 'True Crime']
-    podcasts = [
-        {'title': 'COACH JUSTIN, SOK TAHU SEPAK BOLA APA MEMANG BENERAN TAHU? SELESAI TUH BARANG!!', 'episode_count': 3, 'total_duration': '60 menit'},
-        {'title': 'COACH JUSTIN BONGKAR DALANG DIBALIK ANJLOKNYA INDUSTRI SEPAK BOLA INDONESIA  ', 'episode_count': 2, 'total_duration': '75 menit'},
-    ]
-    context ={'podcasts': podcasts, 'genres':genres}
-    context["user"] = dict(request.session)
+    context.update({'genres': genres, 'podcasts': podcasts})
+    context["user"] = dict(request.session)  
     return render(request, 'podcast_list.html', context)
 
+def episode_list(request, podcast_id):
+    context, episodes = {}, []
 
-def episode_list(request):
-    episodes = [
-        {
-            'title': 'The beginning of something great',
-            'description': 'Lorem Ipsum ....',
-            'duration': '59 menit',
-            'release_date': '18/03/2024',
-        },
-        {
-            'title': 'The continuation of greatness',
-            'description': 'Lorem Ipsum ....',
-            'duration': '1 jam 2 menit',
-            'release_date': '25/03/2024',
-        },
-    ]
-    context = {'episodes': episodes}
+    with connection.cursor() as cursor:
+        query = get_episode_list(podcast_id=podcast_id)
+        cursor.execute(query)
+        result = parse(cursor)
+        context["podcast_name"] = result[0]["judul_podcast"]
+        if result[0]["episode_id"] != None:
+            for entry in result:
+                episodes.append({
+                    'episode_id': entry['episode_id'],
+                    'podcast_id': entry['podcast_id'],
+                    'title': entry['judul'],
+                    'description': entry['deskripsi'],
+                    'duration': convert_minutes_to_hours(entry['durasi']),
+                    'release_date': entry['tanggal_rilis'].strftime("%d/%m/%Y")
+                })
+            
+    context.update({'episodes': episodes})
     context["user"] = dict(request.session)
     return render(request, 'episode_list.html', context)
-
 
 @csrf_exempt
 def add_podcast(request):
     if request.method == 'POST':
+        year = datetime.now().year
+        new_uuid = str(uuid.uuid4())
         title = request.POST.get('title')
-        genre = request.POST.get('genre')
+        genres = request.POST.getlist('genre[]')
         duration = request.POST.get('duration')
+        release_date = datetime.now().strftime("%Y-%m-%d")
 
         with connection.cursor() as cursor:
-            print(title, genre, duration)
-            # cursor.execute(
-            #     "INSERT INTO podcasts_podcast (title, genre_id, duration) VALUES (%s, %s, %s)",
-            #     [title, genre_id, duration]
-            # )
+            cursor.execute(insert_podcast_to_konten(new_uuid, title, release_date, year, duration))
+            cursor.execute(insert_podcast_to_podcast(new_uuid, request.session.get('email')))
+            for genre in genres:
+                cursor.execute(insert_podcast_to_genre(new_uuid, genre))
         
         return redirect('podcast_list')
     else:
         return HttpResponseNotAllowed(['POST'])
     
-
 @csrf_exempt
-def add_episode(request):
+def add_episode(request, podcast_id):
+    print("JIDJAIWJDIWI")
     if request.method == 'POST':
+        new_uuid = str(uuid.uuid4())
         title = request.POST.get('title')
         description = request.POST.get('description')
         duration = request.POST.get('duration')
-        genre = request.POST.get('genre')
+        release_date = datetime.now().strftime("%Y-%m-%d")
 
         with connection.cursor() as cursor:
-            print(title, description, duration)
-            # cursor.execute(
-            #     "INSERT INTO podcasts_podcast (title, genre_id, duration) VALUES (%s, %s, %s)",
-            #     [title, genre_id, duration]
-            # )
+            cursor.execute(insert_episode(new_uuid, podcast_id, title, description, duration, release_date))
         
         return redirect('podcast_list')
     else:
         return HttpResponseNotAllowed(['POST'])
 
+def delete_podcast(request, podcast_id):
+    with connection.cursor() as cursor:
+        cursor.execute(delete_podcast_from_genre(podcast_id))
+        cursor.execute(delete_podcast_from_podcast(podcast_id))
+        cursor.execute(delete_podcast_from_konten(podcast_id))
 
-def delete_podcast(request, pk):
-    print(pk)
     return redirect('podcast_list')
+
+def delete_episode(request, podcast_id, episode_id):
+    with connection.cursor() as cursor:
+        cursor.execute(delete_episode_from_episode(episode_id))
+
+    return redirect('episode_list', podcast_id=podcast_id)
