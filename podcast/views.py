@@ -16,7 +16,6 @@ def play_podcast(request, podcast_id):
         query = get_podcast_detail(podcast_id=podcast_id)
         cursor.execute(query)
         result = parse(cursor)
-        print(result)
 
     context = {
         'podcast_title': result[0]["judul_podcast"],
@@ -106,7 +105,6 @@ def add_podcast(request):
     
 @csrf_exempt
 def add_episode(request, podcast_id):
-    print("JIDJAIWJDIWI")
     if request.method == 'POST':
         new_uuid = str(uuid.uuid4())
         title = request.POST.get('title')

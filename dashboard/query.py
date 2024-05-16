@@ -1,5 +1,5 @@
 def get_user_data(email):
-    query = """
+    return  f"""
         SELECT a.email ,
                 up.judul AS judul_playlist,
                 k.judul AS judul,
@@ -10,7 +10,7 @@ def get_user_data(email):
         LEFT JOIN songwriter sw ON sw.email_akun = a.email 
         LEFT JOIN songwriter_write_song sws ON sw.id = sws.id_songwriter 
         LEFT JOIN konten k ON k.id = sws.id_song 
-        WHERE a.email = %s
+        WHERE a.email = '{email}'
         UNION
         SELECT a.email ,
                 up.judul AS judul_playlist,
@@ -21,9 +21,8 @@ def get_user_data(email):
         LEFT JOIN user_playlist up ON up.email_pembuat = a.email  
         LEFT JOIN podcast p ON p.email_podcaster = pr.email
         LEFT JOIN konten k ON k.id = p.id_konten 
-        WHERE a.email = %s;
+        WHERE a.email = '{email}';
     """
-    return query, [email] 
 
 
 def get_label_data(email):
