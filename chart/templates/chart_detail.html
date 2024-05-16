@@ -12,9 +12,10 @@
             <table class="w-full text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr class="text-gray-200">
-                        <th class="py-4 px-6">Judul Lagu</th>
-                        <th class="py-4 px-6">Oleh</th>
-                        <th class="py-4 px-6">Tanggal Rilis</th>
+                        <th class="py-4 px-6">#</th>
+                        <th class="py-4 px-6">Song Title</th>
+                        <th class="py-4 px-6">By</th>
+                        <th class="py-4 px-6">Released Date</th>
                         <th class="py-4 px-6">Total Plays</th>
                         <th class="py-4 px-6">Actions</th>
                     </tr>
@@ -22,11 +23,12 @@
                 <tbody>
                     {% for song in chart_details %}
                     <tr class="text-gray-700">
+                        <td class="border py-4 px-6">{{ song.number }}</td>
                         <td class="border py-4 px-6">{{ song.title }}</td>
                         <td class="border py-4 px-6">{{ song.artist }}</td>
                         <td class="border py-4 px-6">{{ song.release_date }}</td>
                         <td class="border py-4 px-6">{{ song.total_plays }}</td>
-                        <td class="border py-4 px-6 text-center"><a href="{% url 'podcast' %}" class="text-blue-500">[Lihat]</a></td>
+                        <td class="border py-4 px-6 text-center"><a href="{% url 'dashboard' %}" class="text-blue-500">[See More]</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
