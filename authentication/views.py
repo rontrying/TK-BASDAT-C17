@@ -8,9 +8,8 @@ from django.db import InternalError, connection
 from authentication.query import *
 from utils import parse, roles
 import random
-
-# TODO: uuid harus dibikin biar ga sama
 import uuid
+
 # Create your views here.
 
 def registration_type(request):

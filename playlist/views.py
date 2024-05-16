@@ -1,3 +1,5 @@
+import random
+import uuid
 from django.shortcuts import render
 from django.db import connection
 from dashboard.query import get_label_profile, get_user_profile
@@ -6,19 +8,38 @@ from utils import parse
 
 def user_playlist(request):
 
-    playlists_data = [
-        {"title": "Amazing Grace", "num_songs": 0, "total_duration": "0 minute"},
-        {"title": "Yellow Mellow", "num_songs": 15, "total_duration": "1 hour 15 minutes"},
-        {"title": "Chill Vibes", "num_songs": 3, "total_duration": "12 minutes"},
-        {"title": "Galau Parah", "num_songs": 18, "total_duration": "1 hour 30 minutes"},
-        {"title": "Rock Abiezzz", "num_songs": 9, "total_duration": "30 minutes"}
-    ]
-
+    # playlists_data = [
+    #     {"title": "Amazing Grace", "num_songs": 0, "total_duration": "0 minute"},
+    #     {"title": "Yellow Mellow", "num_songs": 15, "total_duration": "1 hour 15 minutes"},
+    #     {"title": "Chill Vibes", "num_songs": 3, "total_duration": "12 minutes"},
+    #     {"title": "Galau Parah", "num_songs": 18, "total_duration": "1 hour 30 minutes"},
+    #     {"title": "Rock Abiezzz", "num_songs": 9, "total_duration": "30 minutes"}
+    # ]
+    
     playlist_dict = {
         "user": dict(request.session)
-    }  
-    playlist_dict["playlists"] = playlists_data
-    return render(request, 'kelola_playlist.html', context = playlist_dict)
+    }
+
+    email = request.session.get('email')
+    with connection.cursor() as cursor:
+        # Ambil User Playlist
+        cursor.execute(select_user_playlist(email))
+        result = parse(cursor)
+        playlist_dict["playlists"] = result
+
+        # Ambil Jumlah Lagu
+        length = len(result)
+        if (length != 0):
+            for i in range(length):
+                id = playlist_dict["playlists"][i]['id_user_playlist']
+                cursor.execute(count_songs(id))
+                result = parse(cursor)
+                jumlah_lagu = result[0]['count']
+                playlist_dict["playlists"][i]['jumlah_lagu'] = jumlah_lagu
+                if (jumlah_lagu == 0):
+                    playlist_dict["playlists"][i]['total_durasi'] = 0
+    
+    return render(request, 'kelola_playlist.html', playlist_dict)
 
 def tambah_playlist(request):
     context = {
@@ -26,42 +47,48 @@ def tambah_playlist(request):
     }
     return render(request, 'tambah_playlist.html', context)
 
-def playlist_details(request):
-    songs = [
-        {"title": "Right Here", "artist": "Keshi", "duration": "3 minutes"},
-        {"title": "Fragile", "artist": "Laufey", "duration": "5 minutes"},
-        {"title": "Katakan Saja", "artist": "Adikara", "duration": "4 minutes"}
-    ]
-
-    playlist = {
-        "title": "Chill Vibes",
-        "num_songs": 3,
-        "total_duration": "12 minutes",
-        "creation_date": "04/04/2024",
-        "description": "Little chill in your home!",
-        "songs": songs
+def playlist_details(request, id_user_playlist):
+    context = {
+        'user': dict(request.session)
     }
 
-    user_email = request.session.get('email')
-
     with connection.cursor() as cursor:
-        if request.session.get('role') == 'Label':
-            query = get_label_profile(user_email)
-        else:
-            query = get_user_profile(user_email)
+        cursor.execute(select_user_playlist_by_id(id_user_playlist))
+        playlist = parse(cursor)[0]
 
-        cursor.execute(query)
-        result = parse(cursor)
+        cursor.execute(get_songs(id_user_playlist))
+        songs = parse(cursor)
+        song_count = len(songs)
+        
+        cursor.execute(get_user_profile(context["user"]['email']))
+        nama = parse(cursor)[0]['nama']
+        context['user']['nama'] = nama
+    
+    playlist['songs'] = songs
+    playlist['jumlah_lagu'] = song_count
+    playlist['total_durasi'] = 0 if song_count == 0 else playlist['total_durasi']
 
-    context = result[0]
+    # songs = [
+    #     {"title": "Right Here", "artist": "Keshi", "duration": "3 minutes"},
+    #     {"title": "Fragile", "artist": "Laufey", "duration": "5 minutes"},
+    #     {"title": "Katakan Saja", "artist": "Adikara", "duration": "4 minutes"}
+    # ]
+
+    # playlist = {
+    #     "title": "Chill Vibes",
+    #     "num_songs": song_count,
+    #     "total_duration": "12 minutes",
+    #     "creation_date": "04/04/2024",
+    #     "description": "Little chill in your home!",
+    #     "songs": songs
+    # }
 
     context["playlist"] = playlist
-
-    context["user"] = dict(request.session)
+    context['id_user_playlist'] = id_user_playlist
 
     return render(request, 'playlist_details.html', context)
 
-def tambah_lagu(request):
+def tambah_lagu(request, id_user_playlist):
 
     all_songs = [
         {"id": 1, "title": "As It Was", "artist": "Harry Styles"},
@@ -82,7 +109,7 @@ def tambah_lagu(request):
     context["user"] = dict(request.session)
     return render(request, 'tambah_lagu.html', context)
 
-def update_playlist(request):
+def update_playlist(request, id_user_playlist):
     context = {
         "user": dict(request.session)
     }
