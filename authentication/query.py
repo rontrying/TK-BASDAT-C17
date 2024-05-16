@@ -73,6 +73,11 @@ def get_user_role(email, password):
         FROM roles;
     """
 
+def get_nonpremium(email):
+    return f"""
+        SELECT email FROM nonpremium WHERE email = '{email}';
+    """
+
 def get_email(email):
     return f"""
         SELECT email FROM akun WHERE email = '{email}'

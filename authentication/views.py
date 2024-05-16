@@ -17,15 +17,8 @@ def registration_type(request):
     return render(request, 'registration_type.html', context={})
 
 def register_label(request):
-    form = UserCreationForm()
-
-    # TODO: Handle UUID
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Your label has been successfully created!')
-            return redirect('login_user')
+    form = {}
+    
     context = {'form':form}
     return render(request, 'register_label.html', context)
 
@@ -49,9 +42,10 @@ def register_pengguna(request):
                 cursor.execute(insert_akun(email, password, nama, int(gender), tempat_lahir,
                                            tanggal_lahir, True if (podcaster or artist or songwriter) else False, 
                                            kota_asal))
-                cursor.execute(insert_non_premium(email))
+                # cursor.execute(insert_non_premium(email))
                 
                 # Generate id pemilik hak cipta
+                id_pemilik_hak_cipta = uuid.UUID(int=random.getrandbits(128))
                 if (songwriter or artist):
                     id_pemilik_hak_cipta = uuid.UUID(int=random.getrandbits(128))
                     rate_royalti = random.choice([i*50 for i in range(1, 50)])
@@ -79,6 +73,7 @@ def register_pengguna(request):
             # Kalo udah ada emailnya
             except InternalError:
                 messages.error(request, 'Email has been used. Please try again')
+                # cursor.execute(get_nonpremium(email))
                 # cursor.execute(delete_artist(email))         
                 # cursor.execute(delete_podcaster(email))
                 # cursor.execute(delete_songwriter(email))       
@@ -89,16 +84,16 @@ def register_pengguna(request):
 def insert_verified(cursor, email, podcaster, artist, songwriter, id_artist, id_songwriter, id_pemilik_hak_cipta):
     if (podcaster):
         cursor.execute(insert_podcaster(email))
-        cursor.execute(get_podcaster(email))
-        print(parse(cursor))
+        # cursor.execute(get_podcaster(email))
+        # print(parse(cursor))
     if (artist):
         cursor.execute(insert_artist(id_artist, email, id_pemilik_hak_cipta))
-        cursor.execute(get_artist(email))
-        print(parse(cursor))
+        # cursor.execute(get_artist(email))
+        # print(parse(cursor))
     if (songwriter):
         cursor.execute(insert_songwriter(id_songwriter, email, id_pemilik_hak_cipta))
-        cursor.execute(get_podcaster(email))
-        print(parse(cursor))
+        # cursor.execute(get_podcaster(email))
+        # print(parse(cursor))
     return
     
 def check_pemilik_hak_cipta(cursor, id):
