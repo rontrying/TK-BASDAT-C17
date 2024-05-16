@@ -17,12 +17,12 @@
             <tbody class="text-gray-700 text-sm font-light">
                 {% for playlist in playlists %}
                 <tr>
-                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ playlist.title }}</td>
-                    <td class="py-3 px-6 text-left">{{ playlist.num_songs }}</td>
-                    <td class="py-3 px-6 text-left">{{ playlist.total_duration }}</td>
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ playlist.judul }}</td>
+                    <td class="py-3 px-6 text-left">{{ playlist.jumlah_lagu }}</td>
+                    <td class="py-3 px-6 text-left">{{ playlist.total_durasi }}</td>
                     <td class="py-3 px-6 text-left">
-                        <button onclick="window.location.href='/playlist/playlist-details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Details</button>
-                        <button onclick="window.location.href='/playlist/update-playlist/'" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</button>
+                        <button onclick="window.location.href='/playlist/playlist-details/{{ playlist.id_user_playlist }}/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Details</button>
+                        <button onclick="window.location.href='/playlist/update-playlist/{{ playlist.id_user_playlist }}/'" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</button>
                         <button class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-1 px-3 rounded focus:outline-none focus:shadow-outline">Delete</button>
                     </td>
                 </tr>
