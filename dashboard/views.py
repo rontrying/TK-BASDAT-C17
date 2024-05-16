@@ -18,7 +18,6 @@ def user_dashboard(request):
 
     with connection.cursor() as cursor:
         if is_label:
-            # get label data
             query, params = get_label_data(user_email)
             cursor.execute(query, params)
             label_data = parse(cursor)
@@ -30,12 +29,10 @@ def user_dashboard(request):
                     'album_content': [label_data['judul_album']] if label_data['judul_album'] else []
                 })
         else:
-            # run the procedure to check subscription status
             cursor.execute(check_subscription_status(user_email))
 
-            # get user data
-            query, params = get_user_data(user_email)
-            cursor.execute(query, params)
+            query= get_user_data(user_email)
+            cursor.execute(query)
             user_content = parse(cursor)
             context.update(user_content[0] if user_content else {})
 
@@ -43,7 +40,6 @@ def user_dashboard(request):
             context['song_content'] = [item['judul'] for item in user_content if item['tipe'] == 'lagu'and item["judul"] is not None]
             context['podcast_content'] = [item['judul'] for item in user_content if item['tipe'] == 'podcast'and item["judul"] is not None]
 
-            print(context)
 
     context = {k: (v if v else False) for k, v in context.items()}
 
