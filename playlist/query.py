@@ -13,6 +13,15 @@ def select_user_playlist(email):
         SELECT * FROM user_playlist WHERE email_pembuat = '{email}';
     """
 
+def select_all_songs():
+    return f"""
+        SELECT k.id, k.judul, a.nama
+        FROM konten k, song s, akun a, artist t
+        WHERE k.id = s.id_konten AND
+              s.id_artist = t.id AND
+              t.email_akun = a.email;
+    """
+
 def get_songs(id_playlist):
     return f"""
         SELECT id_song FROM playlist_song WHERE id_playlist = '{id_playlist}';
@@ -22,6 +31,8 @@ def count_songs(id_playlist):
     return f"""
         SELECT COUNT(*) FROM playlist_song WHERE id_playlist = '{id_playlist}';
     """
+
+
 
 def get_label_profile(email):
     return f"""

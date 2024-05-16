@@ -89,18 +89,22 @@ def playlist_details(request, id_user_playlist):
 
 def tambah_lagu(request, id_user_playlist):
 
-    all_songs = [
-        {"id": 1, "title": "As It Was", "artist": "Harry Styles"},
-        {"id": 2, "title": "About Damn Time", "artist": "Lizzo"},
-        {"id": 3, "title": "First Class", "artist": "Jack Harlow"},
-        {"id": 4, "title": "Wait For U", "artist": "Future featuring Drake & Tems"},
-        {"id": 5, "title": "Me Porto Bonito", "artist": "Bad Bunny & Chencho Corleone"},
-        {"id": 6, "title": "Moscow Mule", "artist": "Bad Bunny"},
-        {"id": 7, "title": "Tití Me Preguntó", "artist": "Bad Bunny"},
-        {"id": 8, "title": "Running Up That Hill", "artist": "Kate Bush"},
-        {"id": 9, "title": "The Kind Of Love We Make", "artist": "Luke Combs"},
-        {"id": 10, "title": "I Ain't Worried", "artist": "OneRepublic"}
-    ]
+    # all_songs = [
+    #     {"id": 1, "title": "As It Was", "artist": "Harry Styles"},
+    #     {"id": 2, "title": "About Damn Time", "artist": "Lizzo"},
+    #     {"id": 3, "title": "First Class", "artist": "Jack Harlow"},
+    #     {"id": 4, "title": "Wait For U", "artist": "Future featuring Drake & Tems"},
+    #     {"id": 5, "title": "Me Porto Bonito", "artist": "Bad Bunny & Chencho Corleone"},
+    #     {"id": 6, "title": "Moscow Mule", "artist": "Bad Bunny"},
+    #     {"id": 7, "title": "Tití Me Preguntó", "artist": "Bad Bunny"},
+    #     {"id": 8, "title": "Running Up That Hill", "artist": "Kate Bush"},
+    #     {"id": 9, "title": "The Kind Of Love We Make", "artist": "Luke Combs"},
+    #     {"id": 10, "title": "I Ain't Worried", "artist": "OneRepublic"}
+    # ]
+
+    with connection.cursor() as cursor:
+        cursor.execute(select_all_songs())
+        all_songs = parse(cursor)
 
     context = {
         "all_songs": all_songs

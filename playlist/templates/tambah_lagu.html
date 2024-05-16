@@ -16,7 +16,7 @@
                         {% for song in all_songs %}
                         <label class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                             <input type="checkbox" name="songs[]" value="{{ song.id }}" class="form-checkbox h-4 w-4 text-gray-800 focus:ring-gray-800 border-gray-300 rounded">
-                            <span class="ml-3">{{ song.title }} - {{ song.artist }}</span>
+                            <span class="ml-3">{{ song.judul }} - {{ song.nama }}</span>
                         </label>
                         {% endfor %}
                     </div>
