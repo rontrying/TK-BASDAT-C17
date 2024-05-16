@@ -1,33 +1,37 @@
+from utils import parse
+from podcast.query import *
 from datetime import datetime
 from django.urls import reverse
 from django.db import connection
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponseNotAllowed
+from podcast.helper import convert_minutes_to_hours
 from django.views.decorators.csrf import csrf_exempt
 
 
-def play_podcast(request):
+def play_podcast(request, podcast_id):
+    with connection.cursor() as cursor:
+        query = get_podcast_detail(podcast_id=podcast_id)
+        cursor.execute(query)
+        result = parse(cursor)
+        print(result)
+
     context = {
-        'podcast_title': "The Great Podcast",
-        'podcast_genres': ["Comedy", "Education"],  
-        'podcaster_name': "Jane Doe",
-        'total_duration': "2 jam 15 menit",  
-        'release_date': "18/03/2024",
-        'year': "2024",
+        'podcast_title': result[0]["judul_podcast"],
+        'podcast_genres': list({entry['genre'] for entry in result}),  
+        'podcaster_name': result[0]['nama'],
+        'total_duration': convert_minutes_to_hours(sum(entry['durasi_eps'] for entry in result)),
+        'release_date': min(entry['tanggal_rilis_podcast'] for entry in result).strftime("%d/%m/%Y"),
+        'year': str(result[0]['tahun']),
         'episodes': [
             {
-                'title': "Episode 1: The Beginning",
-                'description': "In this episode, we explore the beginnings of something great.",
-                'duration': "45 minutes",
-                'date': "18/03/2024",
-            },
-            {
-                'title': "Episode 2: The Continuation",
-                'description': "Diving deeper into the subject, we uncover new insights.",
-                'duration': "1 hour 30 minutes",
-                'date': "25/03/2024",
-            },
+                'title': entry['judul_eps'],
+                'description': entry['deskripsi_eps'],
+                'duration': convert_minutes_to_hours(entry['durasi_eps']),
+                'date': entry['tanggal_rilis_eps'].strftime("%d/%m/%Y"),
+            }
+            for entry in result
         ],
     }
     context["user"] = dict(request.session)

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="flex flex-col items-center pt-10 bg-gray-100 min-h-screen">
+<div class="flex flex-col items-center pt-10 bg-white min-h-screen">
     <h1 class="text-3xl font-bold text-gray-800 mb-2">Profile</h1>
     <div class="flex flex-wrap bg-white shadow-lg rounded-lg overflow-hidden max-w-4xl w-full mx-10 py-5">
         <!-- Profile Image -->
@@ -13,16 +13,16 @@
         <!-- Profile Details -->
         <div class="w-full md:w-2/3">
             <div class="px-6 py-4">
-                <p class="mb-2"><span class="font-semibold">Nama:</span> {{ nama }}</p>
+                <p class="mb-2"><span class="font-semibold">Name:</span> {{ nama }}</p>
                 <p class="mb-2"><span class="font-semibold">Email:</span> {{ email }}</p>
                 {% if user.is_label %}
-                    <p class="mb-2"><span class="font-semibold">Kontak:</span> {{ kontak }}</p>
+                    <p class="mb-2"><span class="font-semibold">Contact:</span> {{ kontak }}</p>
                 {% endif %}
                 {% if user.is_user %}
-                    <p class="mb-2"><span class="font-semibold">Kota Asal:</span> {{ kota_asal }}</p>
+                    <p class="mb-2"><span class="font-semibold">Hometown:</span> {{ kota_asal }}</p>
                     <p class="mb-2"><span class="font-semibold">Gender:</span> {{ gender }}</p>
-                    <p class="mb-2"><span class="font-semibold">Tempat Lahir:</span> {{ tempat_lahir }}</p>
-                    <p class="mb-2"><span class="font-semibold">Tanggal Lahir:</span> {{ tanggal_lahir }}</p>
+                    <p class="mb-2"><span class="font-semibold">Birth Place:</span> {{ tempat_lahir }}</p>
+                    <p class="mb-2"><span class="font-semibold">Birth Date:</span> {{ tanggal_lahir }}</p>
                 {% endif %}
                 <p><span class="font-semibold">Role:</span> {{ role }}</p>
             </div>
@@ -31,49 +31,70 @@
     
     <!-- Content Cards -->
     <div class="w-full px-10 lg:px-40 mt-6 mx-5 sm:mx-20">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Konten</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Content</h2>
         <div class="space-y-4">
             {% if user.is_user %}
             <div class="bg-white shadow-md rounded-lg p-6">
-                <p class="font-semibold text-lg mb-2">Daftar Playlist:</p>
+                {% if playlist_content %}
+                <p class="font-semibold text-lg mb-2">Playlists:</p>
                 <ul class="list-disc pl-6">
                     <!-- Dynamic Playlist Items Here -->
-                    <li>My Favorite Songs</li>
-                    <li>Workout Mix</li>
+                    {% for playlist in playlist_content %}
+                    <li>{{ playlist }}</li>
+                    {% endfor %}
                 </ul>
+                {% else %}
+                <p class="font-semibold text-lg mb-2">Belum memiliki playlist</p>
+                {% endif %}
             </div>
             {% endif %}
 
-            {% if user.is_artist %}
+            {% if user.is_artist or user.is_songwriter %}
             <div class="bg-white shadow-md rounded-lg p-6">
-                <p class="font-semibold text-lg mb-2">Daftar Lagu:</p>
+                {% if song_content %}
+                <p class="font-semibold text-lg mb-2">Songs:</p>
                 <ul class="list-disc pl-6">
                     <!-- Dynamic Song Items Here -->
-                    <li>Song One</li>
-                    <li>Song Two</li>
+                    {% for song in song_content %}
+                    <li>{{ song }}</li>
+                    {% endfor %}
                 </ul>
+                {% else %}
+                <p class="font-semibold text-lg mb-2">Belum memiliki lagu</p>
+                {% endif %}
             </div>
             {% endif %}
+
 
             {% if user.is_podcaster %}
             <div class="bg-white shadow-md rounded-lg p-6">
-                <p class="font-semibold text-lg mb-2">Daftar Podcast:</p>
+                {% if podcast_content %}
+                <p class="font-semibold text-lg mb-2">Podcasts:</p>
                 <ul class="list-disc pl-6">
                     <!-- Dynamic Podcast Items Here -->
-                    <li>Podcast Episode One</li>
-                    <li>Podcast Episode Two</li>
+                    {% for podcast in podcast_content %}
+                    <li>{{ podcast }}</li>
+                    {% endfor %}
                 </ul>
+                {% else %}
+                <p class="font-semibold text-lg mb-2">Belum memiliki podcast</p>
+                {% endif %}
             </div>
             {% endif %}
 
             {% if user.is_label %}
             <div class="bg-white shadow-md rounded-lg p-6">
-                <p class="font-semibold text-lg mb-2">Daftar Album:</p>
+                {% if album_content %}
+                <p class="font-semibold text-lg mb-2">Albums:</p>
                 <ul class="list-disc pl-6">
                     <!-- Dynamic Album Items Here -->
-                    <li>Album One</li>
-                    <li>Album Two</li>
+                    {% for album in album_content %}
+                    <li>{{ album }}</li>
+                    {% endfor %}
                 </ul>
+                {% else %}
+                <p class="font-semibold text-lg mb-2">Belum memiliki album</p>
+                {% endif %}
             </div>
             {% endif %}
         </div>

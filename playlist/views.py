@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.db import connection
-from dashboard.query import get_label_profile, get_user_profile
 from playlist.query import *
 from utils import parse
 
