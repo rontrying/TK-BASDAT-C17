@@ -141,12 +141,8 @@ def check_songwriter(cursor, id):
     return False if len(result) == 0 else True
 
 def login_user(request):
-    request.session["is_user"] = False
-    request.session["is_label"] = False
-    request.session["is_artist"] = False
-    request.session["is_premium"] = False
-    request.session["is_podcaster"] = False
-    request.session["is_songwriter"] = False
+    list_of_roles = ["is_user", "is_label", "is_artist", "is_premium", "is_podcaster", "is_songwriter"]
+    request.session.update({key: False for key in list_of_roles})
 
     if request.method == 'POST':
         email = request.POST.get('email')

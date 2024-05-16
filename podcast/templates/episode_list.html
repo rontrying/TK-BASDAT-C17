@@ -3,7 +3,7 @@
 
 <div class="container px-5 py-12 mx-auto">
     <div class="mb-12">
-        <h1 class="text-4xl font-bold text-center text-gray-900 mb-6">List Episodes </h1>
+        <h1 class="text-4xl font-bold text-center text-gray-900 mb-6">Daftar Episode pada {{ podcast_name }} </h1>
         <div class="flex justify-center mb-6">
             <button onclick="location.href='{% url 'podcast_list' %}';" class="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">Back</button>
           </div>
@@ -19,7 +19,7 @@
                 </div>
                 <div class="px-6 pt-0 pb-6">
                     <div class="flex items-center justify-start space-x-4">
-                        <button onclick="openDeleteEpisodeModal(event)" class="text-gray-400 hover:text-red-600 transition-colors duration-300">
+                        <button onclick="openDeleteEpisodeModal(event, '{{episode.podcast_id}}', '{{episode.episode_id}}')" class="text-gray-400 hover:text-red-600 transition-colors duration-300">
                             <i class="fas fa-trash-alt fa-lg"></i>
                         </button>
                     </div>
@@ -42,7 +42,7 @@
             <button type="button" onclick="closeDeleteEpisodeModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                 Cancel
             </button>
-            <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-700 text-base font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 sm:ml-3 sm:w-auto sm:text-sm">
+            <button type="submit" id="deleteConfirmationButton" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-700 text-base font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 sm:ml-3 sm:w-auto sm:text-sm">
                 Delete
             </button>
         </div>
@@ -52,9 +52,16 @@
   </div>
 
 <script>
-    function openDeleteEpisodeModal(event) {
+    function openDeleteEpisodeModal(event, podcast_id, episode_id) {
         event.stopPropagation();
         document.getElementById('deleteEpisodeConfirmationModal').classList.remove('hidden');
+
+        const deleteButton = document.getElementById('deleteConfirmationButton');
+        deleteButton.onclick = function(event) {
+            event.preventDefault(); 
+            window.location.href = `delete-episode/${episode_id}/`; 
+        };
+
     }
     function closeDeleteEpisodeModal() {
         document.getElementById('deleteEpisodeConfirmationModal').classList.add('hidden');
