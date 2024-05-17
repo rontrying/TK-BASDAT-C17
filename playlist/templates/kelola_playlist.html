@@ -3,6 +3,22 @@
 <div class="container mx-auto p-4">
     <h1 class="text-3xl mb-6 text-center font-bold">User Playlists</h1>
 
+    {% if messages %}
+    <div id="successModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white p-4 rounded-lg text-center shadow-xl">
+            {% for message in messages %}
+            <p class="text-gray-600 font-bold">{{ message }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+    setTimeout(function() {
+        document.getElementById('successModal').style.display = 'none';
+    }, 3000);
+    </script>
+    {% endif %}
+
     {% if playlists %}
     <div class="overflow-x-auto">
         <table class="min-w-full">
@@ -17,13 +33,16 @@
             <tbody class="text-gray-700 text-sm font-light">
                 {% for playlist in playlists %}
                 <tr>
-                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ playlist.title }}</td>
-                    <td class="py-3 px-6 text-left">{{ playlist.num_songs }}</td>
-                    <td class="py-3 px-6 text-left">{{ playlist.total_duration }}</td>
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ playlist.judul }}</td>
+                    <td class="py-3 px-6 text-left">{{ playlist.jumlah_lagu }}</td>
+                    <td class="py-3 px-6 text-left">{{ playlist.total_durasi }}</td>
                     <td class="py-3 px-6 text-left">
-                        <button onclick="window.location.href='/playlist/playlist-details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Details</button>
-                        <button onclick="window.location.href='/playlist/update-playlist/'" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</button>
-                        <button class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-1 px-3 rounded focus:outline-none focus:shadow-outline">Delete</button>
+                        <button onclick="window.location.href='/playlist/playlist-details/{{ playlist.id_user_playlist }}/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Details</button>
+                        <button onclick="window.location.href='/playlist/update-playlist/{{ playlist.id_user_playlist }}/'" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Edit</button>
+                        <form onsubmit="return confirmDeletion()" action="{% url 'delete_playlist' playlist.id_user_playlist %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-1 px-3 rounded focus:outline-none focus:shadow-outline">Delete</button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
@@ -40,5 +59,11 @@
         </button>
     </div>
 </div>
+
+<script>
+    function confirmDeletion(id) {
+        return confirm('Are you sure you want to delete this playlist?');
+    }
+</script>
 
 {% endblock content %}

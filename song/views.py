@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-def song_details(request):
+def song_details(request, id_konten):
     song = {
         "title": "Right Here",
         "genres": ["Pop", "Indie"],

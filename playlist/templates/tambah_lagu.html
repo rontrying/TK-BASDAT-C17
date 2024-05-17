@@ -3,20 +3,37 @@
 
 <div class="login mx-40 my-10">
     <h1 class="text-3xl mb-6 text-center font-bold">Add Song</h1>
+
+    {% if messages %}
+    <div id="successModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white p-4 rounded-lg text-center shadow-xl">
+            {% for message in messages %}
+            <p class="text-gray-600 font-bold">{{ message }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+    setTimeout(function() {
+        document.getElementById('successModal').style.display = 'none';
+    }, 3000);
+    </script>
+    {% endif %}
+    
     <div class="login mx-40 my-10 bg-gray-100 p-6 rounded-lg text-center">
-        <form method="POST" action="/playlist/playlist-details/">
+        <form id="songForm" method="POST" action="/playlist/playlist-details/{{ playlist.id_user_playlist }}/tambah-lagu/">
             {% csrf_token %}
             <div class="mb-6 mx-auto relative">
                 <label class="block mb-2 font-bold text-left">Song</label>
-                <button onclick="toggleDropdown()" type="button" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500 text-left" aria-haspopup="true" aria-expanded="false">
+                <button id="songButton" onclick="toggleDropdown()" type="button" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500 text-left" aria-haspopup="true" aria-expanded="false">
                     Choose Song
                 </button>
                 <div x-show="open" class="absolute mt-2 w-full rounded-md bg-white shadow-lg" style="display: none;">
                     <div class="py-1" role="none" style="max-height: 200px; overflow-y: auto;">
                         {% for song in all_songs %}
                         <label class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                            <input type="checkbox" name="songs[]" value="{{ song.id }}" class="form-checkbox h-4 w-4 text-gray-800 focus:ring-gray-800 border-gray-300 rounded">
-                            <span class="ml-3">{{ song.title }} - {{ song.artist }}</span>
+                            <input type="radio" name="song" value="{{ song.id }}" class="form-radio h-4 w-4 text-gray-800 focus:ring-gray-800 border-gray-300 rounded" onclick="selectSong('{{ song.judul }} - {{ song.nama }}')">
+                            <span class="ml-3">{{ song.judul }} - {{ song.nama }}</span>
                         </label>
                         {% endfor %}
                     </div>
@@ -33,6 +50,24 @@ function toggleDropdown() {
     var dropdown = document.querySelector('[x-show="open"]');
     dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
 }
+
+function selectSong(songDetail) {
+    var button = document.getElementById('songButton');
+    button.textContent = songDetail;
+    toggleDropdown(); // This will close the dropdown after selection
+}
+
+// Prevent form submission if no song is selected
+document.getElementById('songForm').onsubmit = function() {
+    var radios = document.getElementsByName('song');
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            return true; // A song is selected, allow submit
+        }
+    }
+    alert('Please select a song before submitting.');
+    return false; // Prevent submit
+};
 </script>
 
 {% endblock content %}

@@ -4,7 +4,7 @@
 <div class="login mx-40 my-10">
     <h1 class="text-3xl mb-6 text-center font-bold">Create Playlist</h1>
     <div class="login mx-40 my-10 bg-gray-100 p-6 rounded-lg text-center">
-        <form action="/submit-playlist" method="POST">
+        <form action="/playlist/tambah-playlist/" method="POST">
             {% csrf_token %}
             <div class="mb-6 mx-auto">
                 <label for="judul" class="block mb-2 font-bold text-left">Title:</label>
@@ -20,5 +20,23 @@
         </form>
     </div>
 </div>
+
+{% if messages %}
+<div id="successModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white p-4 rounded-lg text-center shadow-xl">
+        {% for message in messages %}
+        <p class="text-green-600 font-bold">{{ message }}</p>
+        {% endfor %}
+        <button onclick="closeModal()" class="mt-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-3 rounded">Okay</button>
+    </div>
+</div>
+
+<script>
+function closeModal() {
+    document.getElementById('successModal').style.display = 'none';
+}
+setTimeout(closeModal, 3000); // Close the modal after 3 seconds
+</script>
+{% endif %}
 
 {% endblock content %}

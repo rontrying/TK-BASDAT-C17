@@ -8,12 +8,12 @@
     <div class="login mx-40 my-10 bg-gray-100 p-6 rounded-lg text-center">
         <div class="mb-6 mx-auto">
             <div class="mb-4 bg">
-                <p><strong>Title:</strong> {{ playlist.title }}</p>
-                <p><strong>Creator:</strong> {{ nama }}</p>
-                <p><strong>Number of Songs:</strong> {{ playlist.num_songs }}</p>
-                <p><strong>Total Duration:</strong> {{ playlist.total_duration }}</p>
-                <p><strong>Creation Date:</strong> {{ playlist.creation_date }}</p>
-                <p><strong>Description:</strong> {{ playlist.description }}</p>
+                <p><strong>Title:</strong> {{ playlist.judul }}</p>
+                <p><strong>Creator:</strong> {{ user.nama }}</p>
+                <p><strong>Number of Songs:</strong> {{ playlist.jumlah_lagu }}</p>
+                <p><strong>Total Duration:</strong> {{ playlist.total_durasi }}</p>
+                <p><strong>Creation Date:</strong> {{ playlist.tanggal_dibuat }}</p>
+                <p><strong>Description:</strong> {{ playlist.deskripsi }}</p>
             </div>
             
             <div class="flex justify-between mb-4">
@@ -34,9 +34,9 @@
                 <tbody>
                     {% for song in playlist.songs %}
                     <tr class="bg-white border-b">
-                        <td class="py-4 px-6">{{ song.title }}</td>
-                        <td class="py-4 px-6">{{ song.artist }}</td>
-                        <td class="py-4 px-6">{{ song.duration }}</td>
+                        <td class="py-4 px-6">{{ song.judul }}</td>
+                        <td class="py-4 px-6">{{ song.nama }}</td>
+                        <td class="py-4 px-6">{{ song.durasi }}</td>
                         <td class="py-4 px-6">
                             <button onclick="window.location.href='/song/details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">See More</button>
                             <button onclick="window.location.href='#'" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Play</button>
@@ -48,7 +48,7 @@
             </table>
 
             <div class="text-center mt-6">
-                <button onclick="window.location.href='/playlist/playlist-details/tambah-lagu/'"
+                <button onclick="window.location.href='/playlist/playlist-details/{{ id_user_playlist }}/tambah-lagu/'"
                  class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">+ Add Song
                 </button>
             </div>
