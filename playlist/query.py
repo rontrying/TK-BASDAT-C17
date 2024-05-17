@@ -81,3 +81,17 @@ def delete_playlist_song_query(id_playlist):
     return f"""
         DELETE FROM PLAYLIST_SONG WHERE id_playlist = '{id_playlist}';
     """
+
+def set_judul_user_playlist(judul, id_user_playlist):
+    return f"""
+        UPDATE USER_PLAYLIST
+        SET judul = '{judul}'
+        WHERE id_user_playlist = '{id_user_playlist}';
+    """
+
+def set_deskripsi_user_playlist(deskripsi, id_user_playlist):
+    return f"""
+        UPDATE USER_PLAYLIST
+        SET deskripsi = '{deskripsi}'
+        WHERE id_user_playlist = '{id_user_playlist}';
+    """

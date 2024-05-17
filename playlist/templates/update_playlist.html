@@ -4,16 +4,16 @@
 <div class="login mx-40 my-10">
     <h1 class="text-3xl mb-6 text-center font-bold">Update Playlist</h1>
     <div class="login mx-40 my-10 bg-gray-100 p-6 rounded-lg text-center">
-        <form action="/submit-playlist" method="POST">
+        <form action="/playlist/update-playlist/{{ playlist.id_user_playlist }}/" method="POST">
             {% csrf_token %}
             <div class="mb-6 mx-auto">
                 <label for="judul" class="block mb-2 font-bold text-left">Title:</label>
                 <input type="text" id="judul" name="judul" placeholder="Masukkan judul playlist" 
-                class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500 text-sm" required>
+                class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500 text-sm">
 
                 <label for="deskripsi" class="block mt-4 mb-2 font-bold text-left">Description:</label>
                 <textarea id="deskripsi" name="deskripsi" placeholder="Masukkan deskripsi playlist" 
-                class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500 text-sm" rows="2" required></textarea>
+                class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500 text-sm" rows="2"></textarea>
             </div>
 
             <input type="submit" name="submit" value="Submit" class="bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6 w-full hover:bg-gray-800">
