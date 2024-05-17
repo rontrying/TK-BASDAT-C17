@@ -37,7 +37,7 @@ jobs:
 
       - name: Deploy
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_TOKEN: 7f358b82-b7b4-4d2f-9f4d-00bea3819b49
         run: |
           railway up --service web
           gunicorn marmut.wsgi:application --bind 0.0.0.0:$PORT
