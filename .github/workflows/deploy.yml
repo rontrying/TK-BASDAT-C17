@@ -41,4 +41,3 @@ jobs:
         run: |
           railway up --service web
           python manage.py migrate
-          gunicorn marmut.wsgi:application --bind 0.0.0.0:$PORT
