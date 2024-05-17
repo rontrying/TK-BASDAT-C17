@@ -1,35 +1,39 @@
 def get_user_data(email):
     return  f"""
-        SELECT a.email ,
+            SELECT a.email, 
                 a.nama, 
                 a.kota_asal,
                 a.tempat_lahir,
                 a.tanggal_lahir,
+                up.id_playlist ,
                 up.judul AS judul_playlist,
                 k.judul AS judul,
+                k.id,
                 'lagu' AS tipe
-        FROM akun a
-        LEFT JOIN podcaster p ON p.email = a.email
-        LEFT JOIN user_playlist up ON up.email_pembuat = a.email 
-        LEFT JOIN songwriter sw ON sw.email_akun = a.email 
-        LEFT JOIN songwriter_write_song sws ON sw.id = sws.id_songwriter 
-        LEFT JOIN konten k ON k.id = sws.id_song 
-        WHERE a.email = '{email}'
-        UNION
-        SELECT a.email ,
+            FROM akun a
+            LEFT JOIN podcaster p ON p.email = a.email
+            LEFT JOIN user_playlist up ON up.email_pembuat = a.email 
+            LEFT JOIN songwriter sw ON sw.email_akun = a.email 
+            LEFT JOIN songwriter_write_song sws ON sw.id = sws.id_songwriter 
+            LEFT JOIN konten k ON k.id = sws.id_song 
+            WHERE a.email = '{email}'
+            UNION
+            SELECT a.email,
                 a.nama, 
                 a.kota_asal,
                 a.tempat_lahir,
                 a.tanggal_lahir,
+                up.id_playlist ,
                 up.judul AS judul_playlist,
                 k.judul AS judul,
+                k.id,
                 'podcast' AS tipe
-        FROM akun a
-        LEFT JOIN podcaster pr ON pr.email = a.email
-        LEFT JOIN user_playlist up ON up.email_pembuat = a.email  
-        LEFT JOIN podcast p ON p.email_podcaster = pr.email
-        LEFT JOIN konten k ON k.id = p.id_konten 
-        WHERE a.email = '{email}';
+            FROM akun a
+            LEFT JOIN podcaster pr ON pr.email = a.email
+            LEFT JOIN user_playlist up ON up.email_pembuat = a.email  
+            LEFT JOIN podcast p ON p.email_podcaster = pr.email
+            LEFT JOIN konten k ON k.id = p.id_konten 
+            WHERE a.email = '{email}';
     """
 
 
