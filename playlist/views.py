@@ -139,7 +139,7 @@ def tambah_lagu(request, id_user_playlist):
         return redirect('playlist_details', id_user_playlist=id_user_playlist)
     return render(request, 'tambah_lagu.html', context)
 
-# Asumsi kalo string kosong atau spasi dibalikin ke judul sebelumnya
+# Asumsi kalo string kosong atau spasi dibalikin ke judul/deskripsi sebelumnya
 @csrf_exempt
 def update_playlist(request, id_user_playlist):
     context = {

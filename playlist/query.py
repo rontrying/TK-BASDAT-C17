@@ -26,7 +26,7 @@ def select_all_songs():
 
 def get_songs(id_user_playlist):
     return f"""
-        SELECT k.judul, a.nama, k.durasi
+        SELECT k.judul, a.nama, k.durasi, k.id
         FROM user_playlist up
         INNER JOIN playlist_song ps ON up.id_playlist = ps.id_playlist
         INNER JOIN song s ON ps.id_song = s.id_konten
