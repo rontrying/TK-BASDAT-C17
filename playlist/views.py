@@ -20,6 +20,9 @@ def user_playlist(request):
         # Ambil User Playlist
         cursor.execute(select_user_playlist(email))
         result = parse(cursor)
+        for playlist in result:
+            durasi_int = playlist['total_durasi']
+            playlist['total_durasi'] = format_duration(durasi_int)
         playlist_dict["playlists"] = result
     
     return render(request, 'kelola_playlist.html', playlist_dict)
@@ -95,6 +98,9 @@ def playlist_details(request, id_user_playlist):
         cursor.execute(get_songs(id_user_playlist))
         songs = parse(cursor)
         song_count = len(songs)
+        for song in songs:
+            durasi_int = song['durasi']
+            song['durasi'] = format_duration(durasi_int)
         
         cursor.execute(get_user_profile(context["user"]['email']))
         nama = parse(cursor)[0]['nama']
@@ -102,7 +108,9 @@ def playlist_details(request, id_user_playlist):
     
     playlist['songs'] = songs
     playlist['jumlah_lagu'] = song_count
-    playlist['total_durasi'] = 0 if song_count == 0 else playlist['total_durasi']
+
+    total_durasi_int = playlist['total_durasi']
+    playlist['total_durasi'] = 0 if song_count == 0 else format_duration(total_durasi_int)
 
     context["playlist"] = playlist
     context['id_user_playlist'] = id_user_playlist
@@ -161,3 +169,19 @@ def update_playlist(request, id_user_playlist):
             messages.success(request, "Your playlist has been updated successfully. This message will be closed automatically.")
             return redirect('user_playlist')
     return render(request, 'update_playlist.html', context)
+
+def format_duration(duration):
+    final_str = ""
+    hour = 0
+    minute = 0
+    if (duration > 60):
+        hour = duration // 60
+        final_str += f"{str(hour)} hour " if hour == 1 else f"{str(hour)} hours "
+
+    minute = duration - hour*60
+    if (minute != 0):
+        final_str += f"{str(minute)} minute" if minute == 1 else f"{str(minute)} minutes"
+    
+    if (hour == 0 and minute == 0):
+        final_str += "0 minute"
+    return final_str.strip()
