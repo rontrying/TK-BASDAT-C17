@@ -8,6 +8,7 @@ def get_chart_detail(chart_type):
         SELECT ak.nama AS nama_penyanyi,
                 k.judul AS judul_lagu,
                 k.tanggal_rilis,
+                k.id as id_konten,
                 s.total_play 
         FROM playlist_song ps 
         LEFT JOIN konten k ON k.id = ps.id_song   

@@ -34,11 +34,11 @@ def chart_detail(request, chart_type):
                 "title": entry["judul_lagu"],
                 "artist": entry["nama_penyanyi"],
                 "release_date": entry["tanggal_rilis"].strftime("%d/%m/%Y"),
-                "total_plays": entry["total_play"]
+                "total_plays": entry["total_play"],
+                "id_konten": entry["id_konten"]
             
             })
-
-    print(chart_type)
+    
     context = {'chart_details': chart_details, 'chart_type': chart_type}
     context["user"] = dict(request.session)
     return render(request, 'chart_detail.html', context)

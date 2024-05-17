@@ -28,7 +28,7 @@
                         <td class="border py-4 px-6">{{ song.artist }}</td>
                         <td class="border py-4 px-6">{{ song.release_date }}</td>
                         <td class="border py-4 px-6">{{ song.total_plays }}</td>
-                        <td class="border py-4 px-6 text-center"><a href="{% url 'dashboard' %}" class="text-blue-500">[See More]</a></td>
+                        <td class="border py-4 px-6 text-center"><a href="{% url 'song:song_details' id_konten=song.id_konten %}" class="text-blue-500">[See More]</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
