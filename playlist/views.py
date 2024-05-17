@@ -133,6 +133,7 @@ def tambah_lagu(request, id_user_playlist):
     context["user"] = dict(request.session)
     return render(request, 'tambah_lagu.html', context)
 
+# Asumsi kalo string kosong atau spasi dibalikin ke judul sebelumnya
 @csrf_exempt
 def update_playlist(request, id_user_playlist):
     context = {
@@ -145,8 +146,8 @@ def update_playlist(request, id_user_playlist):
 
     if (request.method == "POST"):
         with connection.cursor() as cursor:
-            judul = request.POST.get('judul') if request.POST.get('judul').strip() != "" else user_playlist['judul']
-            deskripsi = request.POST.get('deskripsi') if request.POST.get('deskripsi').strip() != "" else user_playlist['deskripsi']
+            judul = request.POST.get('judul').strip() if request.POST.get('judul').strip() != "" else user_playlist['judul']
+            deskripsi = request.POST.get('deskripsi').strip() if request.POST.get('deskripsi').strip() != "" else user_playlist['deskripsi']
 
             cursor.execute(set_judul_user_playlist(judul, id_user_playlist))
             cursor.execute(set_deskripsi_user_playlist(deskripsi, id_user_playlist))
