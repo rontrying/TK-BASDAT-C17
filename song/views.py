@@ -1,22 +1,38 @@
-from django.shortcuts import render
+import random
+import uuid
+from django.shortcuts import redirect, render
+from django.views.decorators.csrf import csrf_exempt
+from django.db import InternalError, connection
+from django.contrib import messages  
+from .query import *
+from playlist.views import *
+from utils import parse
+from datetime import datetime
+from django.http import HttpResponseRedirect
 
 def song_details(request, id_konten):
-    song = {
-        "title": "Right Here",
-        "genres": ["Pop", "Indie"],
-        "artist": "Keshi",
-        "songwriters": ["Keshi", "Kenji"], 
-        "duration": "3 minutes",
-        "release_date": "24/09/19",
-        "year": 2019,
-        "total_plays": 100000,
-        "total_downloads": 1000,
-        "album": "bandaids",
-    }
+    # song = {
+    #     "title": "",
+    #     "genres": ["Pop", "Indie"],
+    #     "artist": "Keshi",
+    #     "songwriters": ["Keshi", "Kenji"], 
+    #     "duration": "3 minutes",
+    #     "release_date": "24/09/19",
+    #     "year": 2019,
+    #     "total_plays": 100000,
+    #     "total_downloads": 1000,
+    #     "album": "bandaids",
+    # }
+
+    with connection.cursor() as cursor:
+        cursor.execute(select_song_details(id_konten))
+        song = parse(cursor)[0]
+        durasi_int = song["duration"]
+        song['duration'] = format_duration(durasi_int)
 
     context = {
-        "song": song,
         "user": dict(request.session),
+        "song": song,
     }
 
     return render(request, 'song_details.html', context)
