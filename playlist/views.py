@@ -1,9 +1,12 @@
 import random
 import uuid
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.db import connection
+from django.contrib import messages  
 from playlist.query import *
 from utils import parse
+from datetime import datetime
+from django.http import HttpResponseRedirect
 
 def user_playlist(request):
 
@@ -40,11 +43,62 @@ def user_playlist(request):
     
     return render(request, 'kelola_playlist.html', playlist_dict)
 
+def check_user_playlist(cursor, id):
+    cursor.execute(select_user_playlist_by_id(id))
+    result = parse(cursor)
+    return False if len(result) == 0 else True
+
+def get_current_date(): 
+    return datetime.now().strftime('%Y-%m-%d')
+
+def check_playlist(cursor, id):
+    cursor.execute(select_playlist(id))
+    result = parse(cursor)
+    return False if len(result) == 0 else True
+
 def tambah_playlist(request):
     context = {
-        "user": dict(request.session)
+        "user": dict(request.session),
+        'playlist_created': False
     }
+
+    if (request.method == "POST"):
+        judul = request.POST.get('judul')
+        deskripsi = request.POST.get('deskripsi')
+        email = request.session.get('email')
+
+        with connection.cursor() as cursor:
+            id_playlist = uuid.UUID(int=random.getrandbits(128))
+            while (check_playlist(cursor, id_playlist)):
+                id_playlist = uuid.UUID(int=random.getrandbits(128))
+            cursor.execute(insert_playlist(id_playlist))
+            
+            id_user_playlist = uuid.UUID(int=random.getrandbits(128))
+            while (check_user_playlist(cursor, id_user_playlist)):
+                id_user_playlist = uuid.UUID(int=random.getrandbits(128))
+
+            cursor.execute(insert_user_playlist(email, id_user_playlist, judul, deskripsi, 0, get_current_date(),
+                                                id_playlist, 0))
+            messages.success(request, 'Your playlist has been successfully created.\n' + \
+                                      'This message will be closed automatically.')
+            return redirect('user_playlist')
+
     return render(request, 'tambah_playlist.html', context)
+
+def delete_playlist(request, id_user_playlist):
+    if request.method == 'POST':
+        with connection.cursor() as cursor:
+            cursor.execute(select_user_playlist_by_id(id_user_playlist))
+            result = parse(cursor)[0]
+            fk_id_playlist = result['id_playlist']
+
+            cursor.execute(delete_akun_play_user_playlist(id_user_playlist))
+            cursor.execute(delete_playlist_song_query(fk_id_playlist))
+            cursor.execute(delete_user_playlist_query(id_user_playlist))
+            cursor.execute(delete_playlist_query(fk_id_playlist))
+
+        messages.success(request, "Playlist deleted successfully. This message will be closed automatically.")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def playlist_details(request, id_user_playlist):
     context = {
@@ -64,6 +118,7 @@ def playlist_details(request, id_user_playlist):
         context['user']['nama'] = nama
     
     playlist['songs'] = songs
+    print(songs)
     playlist['jumlah_lagu'] = song_count
     playlist['total_durasi'] = 0 if song_count == 0 else playlist['total_durasi']
 
