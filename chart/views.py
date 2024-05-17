@@ -20,15 +20,12 @@ def chart_list(request):
 def chart_detail(request, chart_type):
     chart_details = []
     chart_type = chart_type.replace("-", " ").title()
-    period_map = {
-        "Daily": "1 DAY",
-        "Weekly": "1 WEEK",
-        "Monthly": "1 MONTH",
-        "Yearly": "1 YEAR"
-    }
 
-    with connection.cursor() as cursor:
-        query = get_chart_detail(period_map[chart_type.split(" ")[0]])
+    with connection.cursor() as cursor: 
+        query = update_chart_detail(chart_type)
+        cursor.execute(query)
+
+        query = get_chart_detail(chart_type)
         cursor.execute(query)
         result = parse(cursor)
         for num, entry in enumerate(result):
@@ -37,10 +34,11 @@ def chart_detail(request, chart_type):
                 "title": entry["judul_lagu"],
                 "artist": entry["nama_penyanyi"],
                 "release_date": entry["tanggal_rilis"].strftime("%d/%m/%Y"),
-                "total_plays": entry["total_plays"]
+                "total_plays": entry["total_play"],
+                "id_konten": entry["id_konten"]
             
             })
-
+    
     context = {'chart_details': chart_details, 'chart_type': chart_type}
     context["user"] = dict(request.session)
     return render(request, 'chart_detail.html', context)
