@@ -24,15 +24,16 @@ def select_all_songs():
               t.email_akun = a.email;
     """
 
-def get_songs(id_playlist):
+def get_songs(id_user_playlist):
     return f"""
         SELECT k.judul, a.nama, k.durasi
-        FROM playlist_song ps, konten k, akun a, song s, artist t
-        WHERE ps.id_playlist = '{id_playlist}' AND
-              ps.id_song = s.id_konten AND
-              s.id_konten = k.id AND
-              s.id_artist = t.id AND
-              t.email_akun = a.email;
+        FROM user_playlist up
+        INNER JOIN playlist_song ps ON up.id_playlist = ps.id_playlist
+        INNER JOIN song s ON ps.id_song = s.id_konten
+        INNER JOIN konten k ON s.id_konten = k.id
+        INNER JOIN artist t ON s.id_artist = t.id
+        INNER JOIN akun a ON t.email_akun = a.email
+        WHERE up.id_user_playlist = '{id_user_playlist}';
     """
 
 def count_songs(id_playlist):
@@ -94,4 +95,32 @@ def set_deskripsi_user_playlist(deskripsi, id_user_playlist):
         UPDATE USER_PLAYLIST
         SET deskripsi = '{deskripsi}'
         WHERE id_user_playlist = '{id_user_playlist}';
+    """
+
+def insert_playlist_song(id_playlist, id_song):
+    return f"""
+        INSERT INTO playlist_song (id_playlist, id_song) 
+        VALUES ('{id_playlist}', '{id_song}');
+    """
+
+def update_user_playlist_count(id_playlist):
+    return f"""
+        UPDATE user_playlist
+        SET jumlah_lagu = (
+            SELECT COUNT(*) FROM playlist_song WHERE id_playlist = '{id_playlist}'
+        )
+        WHERE id_playlist = '{id_playlist}';
+    """
+
+def update_user_playlist_duration(id_playlist):
+    return f"""
+        UPDATE USER_PLAYLIST
+        SET total_durasi = COALESCE((
+            SELECT SUM(k.durasi)
+            FROM PLAYLIST_SONG ps
+            JOIN SONG s ON ps.id_song = s.id_konten
+            JOIN KONTEN k ON s.id_konten = k.id
+            WHERE ps.id_playlist = '{id_playlist}'
+        ), 0)
+        WHERE id_playlist = '{id_playlist}';
     """

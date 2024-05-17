@@ -2,7 +2,7 @@ import random
 import uuid
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
-from django.db import connection
+from django.db import InternalError, connection
 from django.contrib import messages  
 from playlist.query import *
 from utils import parse
@@ -21,18 +21,6 @@ def user_playlist(request):
         cursor.execute(select_user_playlist(email))
         result = parse(cursor)
         playlist_dict["playlists"] = result
-
-        # Ambil Jumlah Lagu
-        length = len(result)
-        if (length != 0):
-            for i in range(length):
-                id = playlist_dict["playlists"][i]['id_user_playlist']
-                cursor.execute(count_songs(id))
-                result = parse(cursor)
-                jumlah_lagu = result[0]['count']
-                playlist_dict["playlists"][i]['jumlah_lagu'] = jumlah_lagu
-                if (jumlah_lagu == 0):
-                    playlist_dict["playlists"][i]['total_durasi'] = 0
     
     return render(request, 'kelola_playlist.html', playlist_dict)
 
@@ -121,16 +109,34 @@ def playlist_details(request, id_user_playlist):
 
     return render(request, 'playlist_details.html', context)
 
+@csrf_exempt
 def tambah_lagu(request, id_user_playlist):
 
     with connection.cursor() as cursor:
         cursor.execute(select_all_songs())
         all_songs = parse(cursor)
 
+        cursor.execute(select_user_playlist_by_id(id_user_playlist))
+        playlist = parse(cursor)[0]
+
     context = {
-        "all_songs": all_songs
+        "all_songs": all_songs,
+        "playlist": playlist,
+        "user": dict(request.session)
     }
-    context["user"] = dict(request.session)
+
+    if (request.method == "POST"):
+        id_song = request.POST.get('song')
+        id_playlist = playlist["id_playlist"]
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute(insert_playlist_song(id_playlist, id_song))
+                cursor.execute(update_user_playlist_count(id_playlist))
+                cursor.execute(update_user_playlist_duration(id_playlist))
+            except InternalError:
+                messages.error(request, "You already added this song in the playlist! You can't add it twice!")
+                return render(request, 'tambah_lagu.html', context)
+        return redirect('playlist_details', id_user_playlist=id_user_playlist)
     return render(request, 'tambah_lagu.html', context)
 
 # Asumsi kalo string kosong atau spasi dibalikin ke judul sebelumnya
