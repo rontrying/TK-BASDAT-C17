@@ -34,9 +34,9 @@
                 <tbody>
                     {% for song in playlist.songs %}
                     <tr class="bg-white border-b">
-                        <td class="py-4 px-6">{{ song.title }}</td>
-                        <td class="py-4 px-6">{{ song.artist }}</td>
-                        <td class="py-4 px-6">{{ song.duration }}</td>
+                        <td class="py-4 px-6">{{ song.judul }}</td>
+                        <td class="py-4 px-6">{{ song.nama }}</td>
+                        <td class="py-4 px-6">{{ song.durasi }}</td>
                         <td class="py-4 px-6">
                             <button onclick="window.location.href='/song/details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">See More</button>
                             <button onclick="window.location.href='#'" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Play</button>
