@@ -38,6 +38,4 @@ jobs:
       - name: Deploy
         env:
           RAILWAY_TOKEN: 7f358b82-b7b4-4d2f-9f4d-00bea3819b49
-        run: |
-          railway up --service web
-          python manage.py migrate
+        run: railway up --service web
