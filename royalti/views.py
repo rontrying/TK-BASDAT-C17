@@ -8,7 +8,10 @@ def list_royalti(request):
     context["user"] = dict(request.session)
     user_email = request.session.get("email")
     with connection.cursor() as cur:
-        if context["user"]["is_songwriter"]:
+        if context["user"]["is_songwriter"] and context['user']['is_artist']:
+            query = get_list_royalti_artist_songwriter(user_email)
+            cur.execute(query)
+        elif context["user"]["is_songwriter"]:
             query = get_list_royalti_songwriter(user_email)
             cur.execute(query)
         elif context['user']['is_artist']:
