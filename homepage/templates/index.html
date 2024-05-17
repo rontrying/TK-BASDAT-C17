@@ -1,26 +1,49 @@
-{% extends 'base.html' %}
-{% block content %}
-    
-    <div class="overflow-x-auto relative shadow-md sm:rounded-lg mx-40 my-10">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="py-4 px-6">ID</th>
-                    <th scope="col" class="py-4 px-6">Name</th>
-                    <th scope="col" class="py-4 px-6">Email</th>
-                    <!-- Add more <th> tags here for other columns -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td class="py-4 px-6">{{ row.0 }}</td>
-                    <td class="py-4 px-6">{{ row.1 }}</td>
-                    <td class="py-4 px-6">{{ row.2 }}</td>
-                    <!-- Add more <td> tags here corresponding to additional data -->
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-{% endblock content %}
+{% load static %}
+<style>
+    @layer base {
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+  
+      body {
+        font-family: 'Poppins', sans-serif;
+      }
+    }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+        <script src="//unpkg.com/alpinejs" defer></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        {% block meta %}
+        {% endblock meta %}
+    </head>
+
+    <body class="bg-gray-400">
+        <div class="w-full">
+            <div class="flex items-center justify-center h-screen">
+                <!-- Title and Buttons -->
+                <div class="text-white flex flex-col justify-center items-center py-20 w-full">
+                    <div class="text-center">
+                        <h1 class="text-5xl font-bold mb-4">Welcome to Marmut C-17</h1>
+                        <p class="text-lg mb-8">Start your day with Marmut to lift your mood!</p>
+                        <div class="space-x-4">
+                            <button onclick="location.href='auth/login/'" class="bg-white hover:bg-gray-800 text-gray-800 hover:text-gray-50 font-semibold py-2 px-4 rounded">
+                                Login
+                            </button>
+                            <button onclick="location.href='auth/register/'" class="bg-white hover:bg-gray-800 text-gray-800 hover:text-gray-50 font-semibold py-2 px-4 rounded">
+                                Register
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
