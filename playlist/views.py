@@ -64,6 +64,7 @@ def playlist_details(request, id_user_playlist):
         context['user']['nama'] = nama
     
     playlist['songs'] = songs
+    print(songs)
     playlist['jumlah_lagu'] = song_count
     playlist['total_durasi'] = 0 if song_count == 0 else playlist['total_durasi']
 

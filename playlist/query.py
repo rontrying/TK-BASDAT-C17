@@ -24,7 +24,13 @@ def select_all_songs():
 
 def get_songs(id_playlist):
     return f"""
-        SELECT id_song FROM playlist_song WHERE id_playlist = '{id_playlist}';
+        SELECT k.judul, a.nama, k.durasi
+        FROM playlist_song ps, konten k, akun a, song s, artist t
+        WHERE ps.id_playlist = '{id_playlist}' AND
+              ps.id_song = s.id_konten AND
+              s.id_konten = k.id AND
+              s.id_artist = t.id AND
+              t.email_akun = a.email;
     """
 
 def count_songs(id_playlist):
