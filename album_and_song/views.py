@@ -44,7 +44,8 @@ def create_album(request):
     if request.method == "POST":
         id_album = uuid.uuid4()
         id_label = request.POST.get("label")
-        title = request.POST.get("title")
+        title_album = request.POST.get("title_album")
+        title_song = request.POST.get("title_song")
         str_id_album = str(id_album)
         id_konten = uuid.uuid4()
         str_id_konten = str(id_konten)
@@ -62,8 +63,8 @@ def create_album(request):
             id_songwriter_list = id_songwriter_list[0].split(',')
         list_genre = request.POST.getlist("selected-genre")
         durasi = request.POST.get("duration")
-        cursor.execute(insert_new_album(str_id_album,title,0,id_label,0))
-        cursor.execute(insert_new_konten(str_id_konten,title,durasi))
+        cursor.execute(insert_new_album(str_id_album,title_album,0,id_label,0))
+        cursor.execute(insert_new_konten(str_id_konten,title_song,durasi))
         genre_list = ast.literal_eval(str(list_genre))
         genre_list = genre_list[0].split(',')
         for x in genre_list:
@@ -74,7 +75,7 @@ def create_album(request):
         else :
             for x in id_songwriter_list:
                 cursor.execute(insert_songwriter_write_song(x,id_konten))
-        print(title,id_artist,durasi,list_genre)
+        print(title_song,id_artist,durasi,list_genre)
         return redirect("album_and_song:list_album")
     return render(request, "create_album.html", context=context)
 
