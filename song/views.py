@@ -48,8 +48,6 @@ def add_song_to_playlist(request, id_konten):
 
                 if len(result) != 1:
                     cursor.execute(insert_playlist_song(selected_playlist_id, id_song))
-                    cursor.execute(update_user_playlist_count(selected_playlist_id))
-                    cursor.execute(update_user_playlist_duration(selected_playlist_id))
                     return JsonResponse({'success': True, 'playlist_id': selected_playlist_id, 'song_title': song['title'], 'playlist_title': playlist_title, 'id_user_playlist': id_user_playlist})
                 else:
                     return JsonResponse({'success': False, 'playlist_id': selected_playlist_id, 'song_title': song['title'], 'playlist_title': playlist_title, 'id_user_playlist': id_user_playlist})

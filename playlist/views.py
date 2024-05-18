@@ -139,8 +139,6 @@ def tambah_lagu(request, id_user_playlist):
         with connection.cursor() as cursor:
             try:
                 cursor.execute(insert_playlist_song(id_playlist, id_song))
-                cursor.execute(update_user_playlist_count(id_playlist))
-                cursor.execute(update_user_playlist_duration(id_playlist))
             except InternalError:
                 messages.error(request, "You already added this song in the playlist! You can't add it twice!")
                 return render(request, 'tambah_lagu.html', context)
@@ -156,8 +154,6 @@ def delete_lagu(request, id_user_playlist, id_song):
 
             id_playlist = result['id_playlist']
             cursor.execute(delete_song_from_playlist_song(id_playlist, id_song))
-            cursor.execute(update_user_playlist_count(id_playlist))
-            cursor.execute(update_user_playlist_duration(id_playlist))
         messages.success(request, "Song deleted successfully from playlist. This message will be closed automatically.")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
