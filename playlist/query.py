@@ -112,6 +112,12 @@ def insert_playlist_song(id_playlist, id_song):
         VALUES ('{id_playlist}', '{id_song}');
     """
 
+def delete_song_from_playlist_song(id_playlist, id_song):
+    return f"""
+        DELETE FROM playlist_song
+        WHERE id_playlist = '{id_playlist}' AND id_song = '{id_song}';
+    """
+
 def update_user_playlist_count(id_playlist):
     return f"""
         UPDATE user_playlist

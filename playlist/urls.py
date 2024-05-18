@@ -8,4 +8,5 @@ urlpatterns = [
     path('playlist-details/<uuid:id_user_playlist>/tambah-lagu/', tambah_lagu, name='tambah_lagu'),
     path('update-playlist/<uuid:id_user_playlist>/', update_playlist, name='update_playlist'),
     path('delete-playlist/<uuid:id_user_playlist>/', delete_playlist, name='delete_playlist'),
+    path('delete-song/<uuid:id_user_playlist>/<uuid:id_song>/', delete_lagu, name='delete_song')
 ]

@@ -25,7 +25,7 @@
                     <div class="py-1" role="none" style="max-height: 200px; overflow-y: auto;">
                         {% for playlist in playlists %}
                         <label class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                            <input type="radio" name="playlist" value="{{ playlist.id }}" class="form-radio h-4 w-4 text-gray-800 focus:ring-gray-800 border-gray-300 rounded" onclick="selectPlaylist('{{ playlist.title }}', '{{ playlist.id }}')">
+                            <input type="radio" name="playlist" value="{{ playlist.id }}" class="form-radio h-4 w-4 text-gray-800 focus:ring-gray-800 border-gray-300 rounded" onclick="selectPlaylist('{{ playlist.judul }}', '{{ playlist.id }}')">
                             <span class="ml-3">{{ playlist.judul }}</span>
                         </label>
                         {% endfor %}
@@ -46,7 +46,7 @@
     <div class="bg-white rounded-lg p-6">
         <p class="text-center text-lg">Successfully added the song to the playlist!</p>
         <div class="text-center mt-4">
-            <button onclick="hideModal(); window.location.href='/playlist/playlist-details/{{ playlist }}';" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">To Playlist</button>
+            <button onclick="hideModal(); window.location.href='/playlist/playlist-details/{{ playlist.id }}/';" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">To Playlist</button>
             <button onclick="hideModal(); window.location.href='/song/details/{{ song.id_konten }}/';" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">Back</button>
         </div>
     </div>
@@ -57,16 +57,12 @@ function toggleDropdown() {
     var dropdown = document.getElementById('openPlaylist');
     var button = document.getElementById('playlistButton');
     
-    console.log("Toggling Dropdown"); // Log action to console
-
     if (dropdown.style.display === 'block') {
         dropdown.style.display = 'none';
         button.setAttribute('aria-expanded', 'false');
-        console.log("Dropdown is now hidden.");
     } else {
         dropdown.style.display = 'block';
         button.setAttribute('aria-expanded', 'true');
-        console.log("Dropdown is now visible.");
     }
 }
 
@@ -74,26 +70,22 @@ function selectPlaylist(title, id) {
     var button = document.getElementById('playlistButton');
     var dropdown = document.getElementById('openPlaylist');
     
-    console.log("Selecting playlist: " + title); // Log selected playlist
-
-    button.textContent = title; // Update the button text to the selected playlist's title
-    button.value = id; // Optionally store the selected playlist's ID if needed for form submission
-    dropdown.style.display = 'none'; // Close the dropdown
+    button.textContent = title;
+    button.value = id;
+    dropdown.style.display = 'none';
     button.setAttribute('aria-expanded', 'false');
 
-    console.log("Dropdown closed after selection.");
 }
-
 
 function validatePlaylistSelection() {
     var radios = document.getElementsByName('playlist');
     for (var i = 0; i < radios.length; i++) {
         if (radios[i].checked) {
-            return true; // A playlist is selected, allow submit
+            return true;
         }
     }
     alert('Please select a playlist before submitting.');
-    return false; // Prevent form submission
+    return false;
 }
 
 function showModal() {

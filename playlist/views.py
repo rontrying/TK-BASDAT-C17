@@ -110,7 +110,7 @@ def playlist_details(request, id_user_playlist):
     playlist['jumlah_lagu'] = song_count
 
     total_durasi_int = playlist['total_durasi']
-    playlist['total_durasi'] = 0 if song_count == 0 else format_duration(total_durasi_int)
+    playlist['total_durasi'] = format_duration(total_durasi_int)
 
     context["playlist"] = playlist
     context['id_user_playlist'] = id_user_playlist
@@ -146,6 +146,20 @@ def tambah_lagu(request, id_user_playlist):
                 return render(request, 'tambah_lagu.html', context)
         return redirect('playlist_details', id_user_playlist=id_user_playlist)
     return render(request, 'tambah_lagu.html', context)
+
+@csrf_exempt
+def delete_lagu(request, id_user_playlist, id_song):
+    if request.method == "POST":
+        with connection.cursor() as cursor:
+            cursor.execute(select_user_playlist_by_id(id_user_playlist))
+            result = parse(cursor)[0]
+
+            id_playlist = result['id_playlist']
+            cursor.execute(delete_song_from_playlist_song(id_playlist, id_song))
+            cursor.execute(update_user_playlist_count(id_playlist))
+            cursor.execute(update_user_playlist_duration(id_playlist))
+        messages.success(request, "Song deleted successfully from playlist. This message will be closed automatically.")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 # Asumsi kalo string kosong atau spasi dibalikin ke judul/deskripsi sebelumnya
 @csrf_exempt
