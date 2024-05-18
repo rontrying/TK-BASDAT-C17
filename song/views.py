@@ -11,24 +11,13 @@ from datetime import datetime
 from django.http import HttpResponseRedirect
 
 def song_details(request, id_konten):
-    # song = {
-    #     "title": "",
-    #     "genres": ["Pop", "Indie"],
-    #     "artist": "Keshi",
-    #     "songwriters": ["Keshi", "Kenji"], 
-    #     "duration": "3 minutes",
-    #     "release_date": "24/09/19",
-    #     "year": 2019,
-    #     "total_plays": 100000,
-    #     "total_downloads": 1000,
-    #     "album": "bandaids",
-    # }
 
     with connection.cursor() as cursor:
         cursor.execute(select_song_details(id_konten))
         song = parse(cursor)[0]
         durasi_int = song["duration"]
         song['duration'] = format_duration(durasi_int)
+        song['id_konten'] = id_konten
 
     context = {
         "user": dict(request.session),
@@ -37,18 +26,26 @@ def song_details(request, id_konten):
 
     return render(request, 'song_details.html', context)
 
-def tambah_lagu_ke_playlist(request):
+def tambah_lagu_ke_playlist(request, id_konten):
+    
     context = {
         "user": dict(request.session),
-    }
+    }    
 
-    playlists_data = [
-        {"title": "Amazing Grace", "num_songs": 0, "total_duration": "0 minute"},
-        {"title": "Yellow Mellow", "num_songs": 15, "total_duration": "1 hour 15 minute"},
-        {"title": "Chill Vibes", "num_songs": 3, "total_duration": "12 minutes"},
-        {"title": "Galau Parah", "num_songs": 18, "total_duration": "1 hour 30 minutes"},
-        {"title": "Rock Abiezzz", "num_songs": 9, "total_duration": "30 minutes"}
-    ]
+    with connection.cursor() as cursor:
+        cursor.execute(select_song_details(id_konten))
+        song = parse(cursor)[0]
+        durasi_int = song["duration"]
+        song['duration'] = format_duration(durasi_int)
+        song['id_konten'] = id_konten
 
-    context["playlists"] = playlists_data
+        cursor.execute(select_all_user_playlist(context["user"]['email']))
+        playlists = parse(cursor)
+
+    context["song"] = song
+    context["playlists"] = playlists
+
+    if (request.method == "POST"):
+        return redirect("song_details", id_konten=id_konten)
+
     return render(request, 'tambah_lagu_ke_playlist.html', context)

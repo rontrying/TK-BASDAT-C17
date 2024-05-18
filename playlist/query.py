@@ -5,6 +5,15 @@ def select_playlist(id):
         SELECT * FROM playlist WHERE id = '{id}';
     """
 
+def select_all_user_playlist(email):
+    return f"""
+        SELECT up.judul, p.id
+        FROM user_playlist up
+        JOIN playlist p ON up.id_playlist = p.id
+        JOIN akun a ON a.email = up.email_pembuat
+        WHERE up.email_pembuat = '{email}';
+    """
+
 def select_user_playlist_by_id(id):
     return f"""
         SELECT * from user_playlist where id_user_playlist = '{id}';

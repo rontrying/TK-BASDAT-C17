@@ -4,54 +4,96 @@
 <div class="login mx-40 my-10">
     <h1 class="text-3xl mb-6 text-center font-bold">Add Song to Playlist</h1>
     <div class="mx-40 my-10 p-6 bg-gray-100 rounded-lg shadow">
-        <form method="POST" action="/" onsubmit="event.preventDefault(); showModal();">
+        <form method="POST" action="/" onsubmit="if(validatePlaylistSelection()) showModal();">
             {% csrf_token %}
-            <div class="mb-4">
-                <label for="song_title" class="block text-sm font-bold text-gray-700">Title</label>
-                <input type="text" id="song_title" name="song_title" value="Right Here" disabled class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            </div>
-            <div class="mb-4">
-                <label for="artist_name" class="block text-sm font-bold text-gray-700">Artist</label>
-                <input type="text" id="artist_name" name="artist_name" value="Keshi" disabled class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            </div>
+            {% if song %}
+                <div class="mb-6 mx-auto relative">
+                    <label for="song_title" class="block mb-2 font-bold text-left">Title</label>
+                    <input type="text" id="song_title" name="song_title" value="{{ song.title }}" disabled class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div class="mb-6 mx-auto relative">
+                    <label for="artist_name" class="block mb-2 font-bold text-left">Artist</label>
+                    <input type="text" id="artist_name" name="artist_name" value="{{ song.artist }}" disabled class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+            {% endif %}
             <div class="mb-6 mx-auto relative">
-                <label class="block mb-2 font-bold text-left">Song</label>
-                <button type="button" onclick="togglePlaylistDropdown()" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500 text-left" aria-haspopup="true" aria-expanded="false">
+                <label class="block mb-2 font-bold text-left">Playlist</label>
+                <button id="playlistButton" onclick="toggleDropdown()" type="button" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500 text-left" aria-haspopup="true" aria-expanded="false">
                     Choose Playlist
                 </button>
-                <div x-show="openPlaylist" class="absolute mt-2 w-full rounded-md bg-white shadow-lg" style="display: none;">
+                <div id="openPlaylist" class="absolute mt-2 w-full rounded-md bg-white shadow-lg" style="display: none;">
                     <div class="py-1" role="none" style="max-height: 200px; overflow-y: auto;">
                         {% for playlist in playlists %}
                         <label class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                            <input type="checkbox" name="playlist" value="{{ playlist.title }}" class="form-checkbox h-4 w-4 text-gray-800 focus:ring-gray-800 border-gray-300 rounded">
-                            <span class="ml-3">{{ playlist.title }}</span>
+                            <input type="radio" name="playlist" value="{{ playlist.id }}" class="form-radio h-4 w-4 text-gray-800 focus:ring-gray-800 border-gray-300 rounded" onclick="selectPlaylist('{{ playlist.title }}', '{{ playlist.id }}')">
+                            <span class="ml-3">{{ playlist.judul }}</span>
                         </label>
                         {% endfor %}
                     </div>
-                </div>
+                </div>                
             </div>
             <div class="flex items-center justify-between">
-                <button type="submit" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">+ Add</button>
-                <a href="/song/details/" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Back</a>
+                <input type="submit" name="submit" value="+ Add" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                {% if song %}    
+                    <a href="/song/details/{{ song.id_konten }}/" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Back</a>
+                {% endif %}    
             </div>
         </form>
-        
-        <div id="confirmationModal" class="hidden fixed inset-0 bg-gray-200 bg-opacity-75 flex items-center justify-center p-4">
-            <div class="bg-white rounded-lg p-6">
-                <p class="text-center text-lg">Successfully added a song titled 'Right Here' into 'Amazing Grace'!</p>
-                <div class="text-center mt-4">
-                    <button onclick="hideModal(); window.location.href='/playlist/playlist-details/';" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">To Playlist</button>
-                    <button onclick="hideModal(); window.location.href='/song/details/';" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">Back</button>
-                </div>
-            </div>
+    </div>
+</div>
+
+<div id="confirmationModal" class="hidden fixed inset-0 bg-gray-200 bg-opacity-75 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg p-6">
+        <p class="text-center text-lg">Successfully added the song to the playlist!</p>
+        <div class="text-center mt-4">
+            <button onclick="hideModal(); window.location.href='/playlist/playlist-details/{{ playlist }}';" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">To Playlist</button>
+            <button onclick="hideModal(); window.location.href='/song/details/{{ song.id_konten }}/';" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">Back</button>
         </div>
     </div>
 </div>
 
 <script>
-function togglePlaylistDropdown() {
-    var dropdown = document.querySelector('[x-show="openPlaylist"]');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+function toggleDropdown() {
+    var dropdown = document.getElementById('openPlaylist');
+    var button = document.getElementById('playlistButton');
+    
+    console.log("Toggling Dropdown"); // Log action to console
+
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+        button.setAttribute('aria-expanded', 'false');
+        console.log("Dropdown is now hidden.");
+    } else {
+        dropdown.style.display = 'block';
+        button.setAttribute('aria-expanded', 'true');
+        console.log("Dropdown is now visible.");
+    }
+}
+
+function selectPlaylist(title, id) {
+    var button = document.getElementById('playlistButton');
+    var dropdown = document.getElementById('openPlaylist');
+    
+    console.log("Selecting playlist: " + title); // Log selected playlist
+
+    button.textContent = title; // Update the button text to the selected playlist's title
+    button.value = id; // Optionally store the selected playlist's ID if needed for form submission
+    dropdown.style.display = 'none'; // Close the dropdown
+    button.setAttribute('aria-expanded', 'false');
+
+    console.log("Dropdown closed after selection.");
+}
+
+
+function validatePlaylistSelection() {
+    var radios = document.getElementsByName('playlist');
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            return true; // A playlist is selected, allow submit
+        }
+    }
+    alert('Please select a playlist before submitting.');
+    return false; // Prevent form submission
 }
 
 function showModal() {
