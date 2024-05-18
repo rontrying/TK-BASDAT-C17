@@ -33,3 +33,10 @@ def select_song_details(id_konten):
             k.judul, ak.nama, k.durasi, k.tanggal_rilis, k.tahun, s.total_play, s.total_download, al.judul
         ;
     """
+
+def check_playlist_song(id_playlist, id_song):
+    return f"""
+        SELECT 1
+        FROM playlist_song
+        WHERE id_playlist = '{id_playlist}' AND id_song = '{id_song}';
+    """

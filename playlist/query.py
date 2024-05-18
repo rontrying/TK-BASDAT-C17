@@ -19,6 +19,11 @@ def select_user_playlist_by_id(id):
         SELECT * from user_playlist where id_user_playlist = '{id}';
     """
 
+def select_user_playlist_by_root_id(id):
+    return f"""
+        SELECT * from user_playlist where id_playlist = '{id}';
+    """
+
 def select_user_playlist(email):
     return f"""
         SELECT * FROM user_playlist WHERE email_pembuat = '{email}';
