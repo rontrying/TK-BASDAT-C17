@@ -4,6 +4,22 @@
 <div class="login mx-40 my-10">
     <h1 class="text-3xl mb-6 text-center font-bold">User Playlist Details</h1>
 
+    {% if messages %}
+    <div id="successModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white p-4 rounded-lg text-center shadow-xl">
+            {% for message in messages %}
+            <p class="text-gray-600 font-bold">{{ message }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+    setTimeout(function() {
+        document.getElementById('successModal').style.display = 'none';
+    }, 3000);
+    </script>
+    {% endif %}
+
     {% if playlist %}
     <div class="login mx-40 my-10 bg-gray-100 p-6 rounded-lg text-center">
         <div class="mb-6 mx-auto">
@@ -40,7 +56,10 @@
                         <td class="py-4 px-6">
                             <button onclick="window.location.href='/song/details/{{ song.id }}/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">See More</button>
                             <button onclick="window.location.href='#'" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Play</button>
-                            <button class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-1 px-3 rounded focus:outline-none focus:shadow-outline">Delete</button>
+                            <form action="{% url 'delete_song' playlist.id_user_playlist song.id %}" method="post" onsubmit="return confirmDeletion()" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-1 px-3 rounded focus:outline-none focus:shadow-outline">Delete</button>
+                            </form>
                         </td>
                     </tr>
                     {% endfor %}
@@ -59,4 +78,9 @@
     {% endif %}
 </div>
 
+<script>
+    function confirmDeletion(id) {
+        return confirm('Are you sure you want to delete this song from playlist?');
+    }
+</script>
 {% endblock content %}

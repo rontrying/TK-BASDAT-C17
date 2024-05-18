@@ -29,7 +29,7 @@
 
         <div class="flex space-x-4 justify-center mt-4">
             <button type="button" onclick="window.location.href='#'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Play</button>
-            <button onclick="window.location.href='/song/tambah-lagu/'" class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add to Playlist</button>
+            <button onclick="window.location.href='/song/tambah-lagu/{{ song.id_konten }}/'" class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add to Playlist</button>
             {% if user.is_premium %}
             <button onclick="showDownloadModal()" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Download</button>
             {% endif %}
@@ -41,7 +41,7 @@
 
 <div id="downloadModal" class="hidden fixed inset-0 bg-gray-200 bg-opacity-75 flex items-center justify-center p-4">
     <div class="bg-white rounded-lg p-6">
-        <p class="text-center text-lg">Successfully downloaded a song titled 'Right Here'!</p>
+        <p class="text-center text-lg">Successfully downloaded a song titled '{{ song.title }}'!</p>
         <div class="text-center mt-4">
             <button onclick="hideDownloadModal(); window.location.href='/song/details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">To Download List</button>
             <button onclick="hideDownloadModal(); window.location.href='/song/details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">Back</button>
