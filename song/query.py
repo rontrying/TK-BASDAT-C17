@@ -40,3 +40,29 @@ def check_playlist_song(id_playlist, id_song):
         FROM playlist_song
         WHERE id_playlist = '{id_playlist}' AND id_song = '{id_song}';
     """
+
+def select_downloaded_song(id_song, email_downloader):
+    return f"""
+        SELECT *
+        FROM downloaded_song
+        WHERE id_song = '{id_song}' AND email_downloader = '{email_downloader}'";
+    """
+
+def insert_song_to_downloaded_song(id_song, email_downloader):
+    return f"""
+        INSERT INTO downloaded_song (id_song, email_downloader) 
+        VALUES ('{id_song}', '{email_downloader}');
+    """
+
+def select_one_playlist(id_song, email):
+    return f"""
+        SELECT 
+            up.id_user_playlist
+        FROM 
+            playlist_song ps
+        JOIN 
+            user_playlist up ON up.id_playlist = ps.id_playlist
+        WHERE
+            up.email_pembuat = '{email}' AND
+            ps.id_song = '{id_song}';  
+    """

@@ -19,8 +19,6 @@
             </div>
         {% endif %}
 
-        <!-- <form method="POST"> -->
-            <!-- {% csrf_token %} -->
         <div class="flex items-center w-full">
             <label for="progress" class="font-bold mr-2 flex-shrink-0">Progress:</label>
             <input type="range" id="progress" name="progress" min="0" max="100" class="slider w-full mx-1 auto">
@@ -28,23 +26,22 @@
         </div>
 
         <div class="flex space-x-4 justify-center mt-4">
-            <button type="button" onclick="window.location.href='#'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Play</button>
-            <button onclick="window.location.href='/song/tambah-lagu/{{ song.id_konten }}/'" class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add to Playlist</button>
+            <button type="button" onclick="window.location.href='#'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded w-40 focus:outline-none focus:shadow-outline">Play</button>
+            <button onclick="window.location.href='/song/tambah-lagu/{{ song.id_konten }}/'" class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded w-40 focus:outline-none focus:shadow-outline">Add to Playlist</button>
             {% if user.is_premium %}
-            <button onclick="showDownloadModal()" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Download</button>
+            <button id="downloadButton" onclick="submitDownload('{{ song.id_konten }}')" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded w-40 focus:outline-none focus:shadow-outline">Download</button>
             {% endif %}
-            <button class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline">Back</button>
+            <button onclick="window.history.back()" class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-2 px-4 rounded w-40 focus:outline-none focus:shadow-outline">Back</button>
         </div>
-        <!-- </form> -->
     </div>
 </div>
 
 <div id="downloadModal" class="hidden fixed inset-0 bg-gray-200 bg-opacity-75 flex items-center justify-center p-4">
     <div class="bg-white rounded-lg p-6">
-        <p class="text-center text-lg">Successfully downloaded a song titled '{{ song.title }}'!</p>
+        <p id="modalMessage" class="text-center text-lg"></p>
         <div class="text-center mt-4">
-            <button onclick="hideDownloadModal(); window.location.href='/song/details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">To Download List</button>
-            <button onclick="hideDownloadModal(); window.location.href='/song/details/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">Back</button>
+            <button id="redirectButton" onclick="window.location.href='/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">To Download List</button>
+            <button id="thebackButton" onclick="hideDownloadModal();" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1 hover:bg-black mr-4 text-center">Back</button>
         </div>
     </div>
 </div>
@@ -54,7 +51,40 @@ document.getElementById('progress').oninput = function() {
     document.getElementById('progressValue').textContent = this.value + '%';
 };
 
-function showDownloadModal() {
+function submitDownload(songId) {
+    fetch(`/song/download/${songId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).then(response => response.json()).then(data => {
+        if (data.success) {
+            if (data.already_downloaded) {
+                document.getElementById('redirectButton').textContent = "To Playlist";
+                showDownloadModal(`The song '${data.song_title}' has already been downloaded!`, data.id_user_playlist);
+            } else {
+                document.getElementById('redirectButton').textContent = "To Download List";
+                showDownloadModal(`Successfully downloaded the song '${data.song_title}'!`, "");
+            }
+        } else {
+            showDownloadModal('An error occurred. Please try again.');
+        }
+    }).catch(error => {
+        showDownloadModal('An error occurred. Please try again.');
+        console.error('Error:', error);
+    });
+}
+
+function showDownloadModal(message, id_user_playlist) {
+    document.getElementById('modalMessage').textContent = message;
+    document.getElementById('redirectButton').onclick = function() {
+        if (id_user_playlist === "") {
+            window.location.href = "/";
+        } else {
+            window.location.href = "/playlist/playlist-details/" + id_user_playlist + "/";
+        }
+    };
     document.getElementById('downloadModal').classList.remove('hidden');
 }
 
