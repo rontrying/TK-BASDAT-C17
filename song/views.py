@@ -85,7 +85,7 @@ def download_song(request, id_konten):
             cursor.execute(select_song_details(id_konten))
             song = parse(cursor)[0]
             id_song = id_konten
-            
+
             try:
                 cursor.execute(insert_song_to_downloaded_song(id_song, email_downloader))
                 return JsonResponse({'success': True, 'song_title': song['title'], 'already_downloaded': False})
@@ -101,7 +101,7 @@ def download_song(request, id_konten):
                     return JsonResponse({'success': False, 'message': 'An error occurred'})
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
-
+@csrf_exempt
 def download_song(request, id_konten):
     if request.method == "POST":
         user = dict(request.session)
@@ -123,4 +123,21 @@ def download_song(request, id_konten):
                 else:
                     return JsonResponse({'success': True, 'song_title': song['title'], 'already_downloaded': True, 'id_user_playlist': playlist[0]['id_user_playlist']})
 
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+@csrf_exempt
+def play_song(request, id_konten):
+    if request.method == "POST":
+        user = dict(request.session)
+        email_pemain = user['email']
+        progress = request.POST.get('progress', 0)
+
+        if float(progress) > 70:
+            with connection.cursor() as cursor:
+                cursor.execute(insert_akun_play_song(email_pemain, id_konten))
+                cursor.execute(update_akun_play_song(id_konten))
+                cursor.execute(update_download(id_konten))
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'message': 'Progress less than 70%'})
     return JsonResponse({'success': False, 'message': 'Invalid request method'})

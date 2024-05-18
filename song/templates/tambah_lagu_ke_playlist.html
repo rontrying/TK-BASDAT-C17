@@ -96,11 +96,8 @@ function validatePlaylistSelection() {
     return false;
 }
 
-function showModal(message, id_user_playlist) {
+function showModal(message) {
     document.getElementById('modalMessage').textContent = message;
-    document.getElementById('toPlaylistButton').onclick = function() {
-        window.location.href = "/playlist/playlist-details/" + id_user_playlist + "/";
-    };
     document.getElementById('confirmationModal').classList.remove('hidden');
 }
 
@@ -119,15 +116,20 @@ document.getElementById('songForm').onsubmit = function(event) {
             }
         }).then(response => response.json()).then(data => {
             if (data.success) {
-                showModal(`Successfully added the song '${data.song_title}' to the playlist '${data.playlist_title}'!`, data.id_user_playlist);
+                showModal(`Successfully added the song '${data.song_title}' to the playlist '${data.playlist_title}'!`);
             } else {
-                showModal(`The song '${data.song_title}' is already in the playlist '${data.playlist_title}'!`, data.id_user_playlist);
+                showModal(`The song '${data.song_title}' is already in the '${data.playlist_title}'!`);
             }
         }).catch(error => {
-            showModal('An error occurred. Please try again.', null);
+            showModal('An error occurred. Please try again.');
             console.error('Error:', error);
         });
     }
+};
+
+document.getElementById('toPlaylistButton').onclick = function() {
+    hideModal();
+    window.location.href = "/playlist/playlist-details/{{ playlist.id }}/";
 };
 
 document.getElementById('backButton').onclick = function() {
