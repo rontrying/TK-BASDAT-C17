@@ -30,7 +30,6 @@ def song_details(request, id_konten):
 
 def add_song_to_playlist(request, id_konten):
     if request.method == "POST":
-        user = dict(request.session)
         selected_playlist_id = request.POST.get('selectedPlaylistId')
 
         if selected_playlist_id:
@@ -76,3 +75,52 @@ def tambah_lagu_ke_playlist(request, id_konten):
         context["success"] = request.GET["success"] == "True"
 
     return render(request, 'tambah_lagu_ke_playlist.html', context)
+
+def download_song(request, id_konten):
+    if request.method == "POST":
+        user = dict(request.session)
+        email_downloader = user['email']
+        
+        with connection.cursor() as cursor:
+            cursor.execute(select_song_details(id_konten))
+            song = parse(cursor)[0]
+            id_song = id_konten
+            
+            try:
+                cursor.execute(insert_song_to_downloaded_song(id_song, email_downloader))
+                return JsonResponse({'success': True, 'song_title': song['title'], 'already_downloaded': False})
+            except InternalError as e:
+                if 'already downloaded' in str(e):
+                    cursor.execute(select_one_playlist(id_song, email_downloader))
+                    playlist = parse(cursor)
+                    if len(playlist) == 0:
+                        return JsonResponse({'success': True, 'song_title': song['title'], 'already_downloaded': True, 'id_user_playlist': ""})
+                    else:
+                        return JsonResponse({'success': True, 'song_title': song['title'], 'already_downloaded': True, 'id_user_playlist': playlist[0]['id_user_playlist']})
+                else:
+                    return JsonResponse({'success': False, 'message': 'An error occurred'})
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
+def download_song(request, id_konten):
+    if request.method == "POST":
+        user = dict(request.session)
+        email_downloader = user['email']
+        
+        with connection.cursor() as cursor:
+            cursor.execute(select_song_details(id_konten))
+            song = parse(cursor)[0]
+            id_song = id_konten
+
+            try:
+                cursor.execute(insert_song_to_downloaded_song(id_song, email_downloader))
+                return JsonResponse({'success': True, 'song_title': song['title'], 'already_downloaded': False})
+            except InternalError:
+                cursor.execute(select_one_playlist(id_song, email_downloader))
+                playlist = parse(cursor)
+                if (len(playlist) == 0):
+                    return JsonResponse({'success': True, 'song_title': song['title'], 'already_downloaded': True, 'id_user_playlist': ""})
+                else:
+                    return JsonResponse({'success': True, 'song_title': song['title'], 'already_downloaded': True, 'id_user_playlist': playlist[0]['id_user_playlist']})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
