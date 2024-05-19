@@ -4,11 +4,13 @@ from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from django.db import InternalError, connection
 from django.contrib import messages  
+from django.contrib.auth.decorators import login_required
 from playlist.query import *
 from utils import parse
 from datetime import datetime
 from django.http import HttpResponseRedirect, JsonResponse
 
+@login_required(login_url='/auth/login/')
 def user_playlist(request):
     
     playlist_dict = {
@@ -41,6 +43,7 @@ def check_playlist(cursor, id):
     return False if len(result) == 0 else True
 
 @csrf_exempt
+@login_required(login_url='/auth/login/')
 def tambah_playlist(request):
     context = {
         "user": dict(request.session),
@@ -71,6 +74,7 @@ def tambah_playlist(request):
     return render(request, 'tambah_playlist.html', context)
 
 @csrf_exempt
+@login_required(login_url='/auth/login/')
 def delete_playlist(request, id_user_playlist):
     if request.method == 'POST':
         with connection.cursor() as cursor:
@@ -86,6 +90,7 @@ def delete_playlist(request, id_user_playlist):
         messages.success(request, "Playlist deleted successfully. This message will be closed automatically.")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+@login_required(login_url='/auth/login/')
 def playlist_details(request, id_user_playlist):
     context = {
         'user': dict(request.session)
@@ -118,6 +123,7 @@ def playlist_details(request, id_user_playlist):
     return render(request, 'playlist_details.html', context)
 
 @csrf_exempt
+@login_required(login_url='/auth/login/')
 def tambah_lagu(request, id_user_playlist):
 
     with connection.cursor() as cursor:
@@ -146,6 +152,7 @@ def tambah_lagu(request, id_user_playlist):
     return render(request, 'tambah_lagu.html', context)
 
 @csrf_exempt
+@login_required(login_url='/auth/login/')
 def delete_lagu(request, id_user_playlist, id_song):
     if request.method == "POST":
         with connection.cursor() as cursor:
@@ -159,6 +166,7 @@ def delete_lagu(request, id_user_playlist, id_song):
 
 # Asumsi kalo string kosong atau spasi dibalikin ke judul/deskripsi sebelumnya
 @csrf_exempt
+@login_required(login_url='/auth/login/')
 def update_playlist(request, id_user_playlist):
     context = {
         "user": dict(request.session)

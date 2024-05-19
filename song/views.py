@@ -1,17 +1,12 @@
-import random
-import uuid
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from django.db import InternalError, connection
-from django.contrib import messages  
 from .query import *
 from playlist.views import *
 from utils import parse
-from datetime import datetime
-from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 
-
+@login_required(login_url='/auth/login/')
 def song_details(request, id_konten):
 
     with connection.cursor() as cursor:
@@ -28,6 +23,7 @@ def song_details(request, id_konten):
 
     return render(request, 'song_details.html', context)
 
+@csrf_exempt
 def add_song_to_playlist(request, id_konten):
     if request.method == "POST":
         selected_playlist_id = request.POST.get('selectedPlaylistId')
@@ -52,6 +48,7 @@ def add_song_to_playlist(request, id_konten):
                     return JsonResponse({'success': False, 'playlist_id': selected_playlist_id, 'song_title': song['title'], 'playlist_title': playlist_title, 'id_user_playlist': id_user_playlist})
         return JsonResponse({'success': False, 'message': 'Playlist not selected'})
 
+@login_required(login_url='/auth/login/')
 def tambah_lagu_ke_playlist(request, id_konten):
     context = {
         "user": dict(request.session),
