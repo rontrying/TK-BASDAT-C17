@@ -66,3 +66,33 @@ def select_one_playlist(id_song, email):
             up.email_pembuat = '{email}' AND
             ps.id_song = '{id_song}';  
     """
+
+def insert_akun_play_song(email_pemain, id_song):
+    return f"""
+        INSERT INTO akun_play_song (email_pemain, id_song, waktu)
+        VALUES ('{email_pemain}', '{id_song}', CURRENT_TIMESTAMP);
+    """
+
+def update_akun_play_song(id_song):
+    return f"""
+        UPDATE song
+        SET total_play = (
+            SELECT COUNT(*) FROM akun_play_song WHERE id_song = '{id_song}'
+        )
+        WHERE id_konten = '{id_song}';
+    """
+
+def update_download(id_song):
+    return f"""
+        UPDATE song
+        SET total_download = (
+            SELECT COUNT(*) FROM downloaded_song WHERE id_song = '{id_song}'
+        )
+        WHERE id_konten = '{id_song}';
+    """
+
+def insert_akun_play_user_playlist(email_pemain, id_user_playlist, email_pembuat):
+    return f"""
+        INSERT INTO akun_play_user_playlist (email_pemain, id_user_playlist, email_pembuat, waktu)
+        VALUES ('{email_pemain}', '{id_user_playlist}', '{email_pembuat}',CURRENT_TIMESTAMP);
+    """

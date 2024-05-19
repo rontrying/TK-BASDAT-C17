@@ -26,7 +26,7 @@
         </div>
 
         <div class="flex space-x-4 justify-center mt-4">
-            <button type="button" onclick="window.location.href='#'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded w-40 focus:outline-none focus:shadow-outline">Play</button>
+            <button type="button" onclick="handlePlay('{{ song.id_konten }}')" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded w-40 focus:outline-none focus:shadow-outline">Play</button>
             <button onclick="window.location.href='/song/tambah-lagu/{{ song.id_konten }}/'" class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded w-40 focus:outline-none focus:shadow-outline">Add to Playlist</button>
             {% if user.is_premium %}
             <button id="downloadButton" onclick="submitDownload('{{ song.id_konten }}')" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded w-40 focus:outline-none focus:shadow-outline">Download</button>
@@ -74,6 +74,31 @@ function submitDownload(songId) {
         showDownloadModal('An error occurred. Please try again.');
         console.error('Error:', error);
     });
+}
+
+function handlePlay(songId) {
+    const progress = document.getElementById('progress').value;
+    if (progress > 70) {
+        fetch(`/song/play/${songId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({ progress })
+        }).then(response => response.json()).then(data => {
+            if (data.success) {
+                console.log('Play recorded');
+                window.location.reload();
+            } else {
+                console.log(data.message);
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    } else {
+        console.log('Progress less than 70%, play not recorded');
+    }
 }
 
 function showDownloadModal(message, id_user_playlist) {

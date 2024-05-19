@@ -33,9 +33,8 @@
             </div>
             
             <div class="flex justify-between mb-4">
-                <button class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Shuffle Play</button>
-                <button class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                 onclick="window.location.href='/playlist/'">Back</button>
+                <button class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="playShuffleSongInPlaylist('{{ id_user_playlist }}')">Shuffle Play</button>
+                <button class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="window.location.href='/playlist/'">Back</button>
             </div>
 
             <table class="w-full text-sm text-left">
@@ -55,7 +54,7 @@
                         <td class="py-4 px-6">{{ song.durasi }}</td>
                         <td class="py-4 px-6">
                             <button onclick="window.location.href='/song/details/{{ song.id }}/'" class="bg-gray-400 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">See More</button>
-                            <button onclick="window.location.href='#'" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Play</button>
+                            <button onclick="playSongInPlaylist('{{ song.id }}')" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">Play</button>
                             <form action="{% url 'delete_song' playlist.id_user_playlist song.id %}" method="post" onsubmit="return confirmDeletion()" style="display: inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="bg-black-500 hover:bg-gray-900 border border-gray-900 text-black font-bold hover:text-white py-1 px-3 rounded focus:outline-none focus:shadow-outline">Delete</button>
@@ -67,20 +66,54 @@
             </table>
 
             <div class="text-center mt-6">
-                <button onclick="window.location.href='/playlist/playlist-details/{{ id_user_playlist }}/tambah-lagu/'"
-                 class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">+ Add Song
-                </button>
+                <button onclick="window.location.href='/playlist/playlist-details/{{ id_user_playlist }}/tambah-lagu/'" class="bg-gray-500 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">+ Add Song</button>
             </div>
         </div>
     </div>
     {% else %}
-    <p class="text-center">You haven't make a Playlist</p>
+    <p class="text-center">You haven't made a Playlist</p>
     {% endif %}
 </div>
 
 <script>
     function confirmDeletion(id) {
         return confirm('Are you sure you want to delete this song from playlist?');
+    }
+
+    function playSongInPlaylist(songId) {
+        fetch(`/song/details/${songId}/play-in-playlist/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then(response => response.json()).then(data => {
+            if (data.success) {
+                console.log('Play recorded');
+            } else {
+                console.log('Error: ' + data.message);
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function playShuffleSongInPlaylist(id_user_playlist) {
+        fetch(`/song/details/${id_user_playlist}/shuffle-play/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then(response => response.json()).then(data => {
+            if (data.success) {
+                console.log('Shuffle Play recorded');
+            } else {
+                console.log('Error: ' + data.message);
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
     }
 </script>
 {% endblock content %}
