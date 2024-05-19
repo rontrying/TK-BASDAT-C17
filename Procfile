@@ -1,1 +1,1 @@
-web: gunicorn marmut.wsg
+web: gunicorn marmut.wsgi
