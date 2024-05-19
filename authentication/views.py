@@ -149,6 +149,8 @@ def login_user(request):
         password = request.POST.get('password')
 
         with connection.cursor() as cursor:
+            cursor.execute(check_subscription_status(email))
+
             cursor.execute(get_user_role(email, password))
             result = parse(cursor)
             if len(result) > 0:
