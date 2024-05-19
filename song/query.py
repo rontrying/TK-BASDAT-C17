@@ -90,3 +90,9 @@ def update_download(id_song):
         )
         WHERE id_konten = '{id_song}';
     """
+
+def insert_akun_play_user_playlist(email_pemain, id_user_playlist, email_pembuat):
+    return f"""
+        INSERT INTO akun_play_user_playlist (email_pemain, id_user_playlist, email_pembuat, waktu)
+        VALUES ('{email_pemain}', '{id_user_playlist}', '{email_pembuat}',CURRENT_TIMESTAMP);
+    """

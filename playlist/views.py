@@ -7,7 +7,7 @@ from django.contrib import messages
 from playlist.query import *
 from utils import parse
 from datetime import datetime
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 
 def user_playlist(request):
     
