@@ -18,7 +18,7 @@
             {% endif %}
             <div class="mb-6 mx-auto relative">
                 <label class="block mb-2 font-bold text-left">Playlist</label>
-                <button id="playlistButton" onclick="toggleDropdown()" type="button" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500 text-left" aria-haspopup="true" aria-expanded="false">
+                <button id="playlistButton" type="button" class="border border-gray-400 rounded w-full py-2 px-3 focus:outline-none focus:border-blue-500 text-left" aria-haspopup="true" aria-expanded="false" onclick="toggleDropdown()">
                     Choose Playlist
                 </button>
                 <div id="openPlaylist" class="absolute mt-2 w-full rounded-md bg-white shadow-lg" style="display: none;">
@@ -77,7 +77,7 @@ function selectPlaylist(title, id) {
     var dropdown = document.getElementById('openPlaylist');
     
     button.textContent = title;
-    button.value = id;
+    button.dataset.playlistId = id;
     dropdown.style.display = 'none';
     button.setAttribute('aria-expanded', 'false');
 
@@ -116,8 +116,11 @@ document.getElementById('songForm').onsubmit = function(event) {
             }
         }).then(response => response.json()).then(data => {
             if (data.success) {
+                // Set the data attribute to the playlist ID from the response
+                document.getElementById('toPlaylistButton').dataset.playlistId = data.id_user_playlist;
                 showModal(`Successfully added the song '${data.song_title}' to the playlist '${data.playlist_title}'!`);
             } else {
+                document.getElementById('toPlaylistButton').dataset.playlistId = data.id_user_playlist;
                 showModal(`The song '${data.song_title}' is already in the '${data.playlist_title}'!`);
             }
         }).catch(error => {
@@ -129,7 +132,8 @@ document.getElementById('songForm').onsubmit = function(event) {
 
 document.getElementById('toPlaylistButton').onclick = function() {
     hideModal();
-    window.location.href = "/playlist/playlist-details/{{ playlist.id }}/";
+    const playlistId = this.dataset.playlistId; // Retrieve the playlist ID from the data attribute
+    window.location.href = "/playlist/playlist-details/" + playlistId + "/";
 };
 
 document.getElementById('backButton').onclick = function() {
