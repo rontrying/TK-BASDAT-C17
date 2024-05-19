@@ -35,7 +35,6 @@ def get_podcast_list(email_account):
 def get_episode_list(podcast_id):
     return f"""
         SELECT e.id_episode AS episode_id,
-                e.id_konten_podcast AS podcast_id,
                 k.judul AS judul_podcast,
                 e.judul,
                 deskripsi,
