@@ -92,11 +92,10 @@ def add_podcast(request):
         new_uuid = str(uuid.uuid4())
         title = request.POST.get('title')
         genres = request.POST.getlist('genre[]')
-        duration = request.POST.get('duration')
         release_date = datetime.now().strftime("%Y-%m-%d")
 
         with connection.cursor() as cursor:
-            cursor.execute(insert_podcast_to_konten(new_uuid, title, release_date, year, duration))
+            cursor.execute(insert_podcast_to_konten(new_uuid, title, release_date, year, 0))
             cursor.execute(insert_podcast_to_podcast(new_uuid, request.session.get('email')))
             for genre in genres:
                 cursor.execute(insert_podcast_to_genre(new_uuid, genre))
