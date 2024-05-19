@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn marmut.wsg
+web: gunicorn marmut.wsgi
