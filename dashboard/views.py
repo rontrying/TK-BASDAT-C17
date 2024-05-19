@@ -42,7 +42,7 @@ def user_dashboard(request):
     user_info = dict(request.session)
     context['user'] = user_info
     context["role"] = parse_role(context["user"]["roles"])
-    context['gender'] = "Male" if user_info.get('gender') == 1 else "Female"
+    context['gender'] = "Male" if context.get('gender') == 1 else "Female"
 
     return render(request, 'dashboard.html', context)
 

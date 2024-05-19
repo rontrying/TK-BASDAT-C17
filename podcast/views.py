@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def play_podcast(request, podcast_id):
+
     with connection.cursor() as cursor:
         query = get_podcast_detail(podcast_id=podcast_id)
         cursor.execute(query)
@@ -21,7 +22,7 @@ def play_podcast(request, podcast_id):
         'podcast_title': result[0]["judul_podcast"],
         'podcast_genres': list({entry['genre'] for entry in result}),  
         'podcaster_name': result[0]['nama'],
-        'total_duration': convert_minutes_to_hours(sum(entry['durasi_eps'] for entry in result)),
+        'total_duration': convert_minutes_to_hours(sum(entry['durasi_eps'] for entry in result if entry['durasi_eps'] is not None)),
         'release_date': min(entry['tanggal_rilis_podcast'] for entry in result).strftime("%d/%m/%Y"),
         'year': str(result[0]['tahun']),
         'episodes': [
@@ -31,9 +32,10 @@ def play_podcast(request, podcast_id):
                 'duration': convert_minutes_to_hours(entry['durasi_eps']),
                 'date': entry['tanggal_rilis_eps'].strftime("%d/%m/%Y"),
             }
-            for entry in result
+            for entry in result if entry['durasi_eps'] is not None
         ],
     }
+    context["podcast_id"] = podcast_id
     context["user"] = dict(request.session)
 
     return render(request, 'play_podcast.html', context)
@@ -72,7 +74,6 @@ def episode_list(request, podcast_id):
             for entry in result:
                 episodes.append({
                     'episode_id': entry['episode_id'],
-                    'podcast_id': entry['podcast_id'],
                     'title': entry['judul'],
                     'description': entry['deskripsi'],
                     'duration': convert_minutes_to_hours(entry['durasi']),
@@ -81,6 +82,7 @@ def episode_list(request, podcast_id):
             
     context.update({'episodes': episodes})
     context["user"] = dict(request.session)
+    context["podcast_id"] = podcast_id
     return render(request, 'episode_list.html', context)
 
 @csrf_exempt
