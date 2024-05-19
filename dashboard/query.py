@@ -62,6 +62,4 @@ def get_label_profile(email):
             """
 
 
-def check_subscription_status(email):
-    return f"SELECT check_subscription_status('{email}');"
 

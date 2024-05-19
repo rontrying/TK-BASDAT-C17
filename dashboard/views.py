@@ -29,8 +29,6 @@ def user_dashboard(request):
                     'album_content': [label_data['judul_album']] if label_data['judul_album'] else []
                 })
         else:
-            cursor.execute(check_subscription_status(user_email))
-
             query= get_user_data(user_email)
             cursor.execute(query)
             user_content = parse(cursor)

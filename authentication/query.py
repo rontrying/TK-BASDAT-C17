@@ -45,6 +45,9 @@ def insert_non_premium(email):
         VALUES ('{email}');
     """
 
+def check_subscription_status(email):
+    return f"SELECT check_subscription_status('{email}');"
+
 def get_pemilik_hak_cipta(id):
     return f"""
         SELECT * from pemilik_hak_cipta WHERE id = '{id}';
